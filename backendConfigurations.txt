@@ -1,0 +1,20 @@
+Proiect colectic backend:
+
+install mysql
+install heidiSQL 
+run heidiSQL -> new -> network type -> mysql -> user: root -> pass: root -> create new database "eppione"
+
+install and set up lombok for eclipse
+
+install java jdk 1.8(if not already installed) and add id to path variables
+
+Open eclipse -> File -> import -> Maven -> Existing Maven Project
+
+WIndow -> Preferences -> Java -> Installed JRE's -> Add -> Standard VM -> choose JKD's path (path to java jdk 1.8, ex: C:\Program Files\Java\jdk1.8.0_60) JDK NOT JRE!!!-> ... ->select the new added jdk -> save
+
+right click on project -> run as -> maven generate-sources
+right click on project -> maven -> update project
+
+run as -> Java application
+
+add Postman to Google Chrome Apps -> import Postman Collection from project folder
