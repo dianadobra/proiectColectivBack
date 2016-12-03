@@ -41,7 +41,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
 		return userFromDatabase.map(user -> {
 
-			final List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+			final List<GrantedAuthority> grantedAuthorities = user.getRoles().stream()
 					.map(authority -> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toList());
 
 			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),

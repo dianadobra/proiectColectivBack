@@ -36,19 +36,18 @@ public class User {
 	private String function;
 	private Long idSuperior;
 
-	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = {
 			@JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "role_name", referencedColumnName = "name") })
-	private Set<Role> authorities = new HashSet<>();
+	private Set<Role> roles = new HashSet<>();
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "department_id")
 	private Department department;
 
 	public boolean isSysadmin() {
-		return authorities.contains(Role.SYSADMIN);
+		return roles.contains(Role.SYSADMIN);
 	}
 
 }

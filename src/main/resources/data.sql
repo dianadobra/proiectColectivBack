@@ -3,7 +3,6 @@ USE eppione;
 -- ========== DB SETUP script ==========
 
 INSERT INTO `role` VALUES 
-('ROLE_SYSADMIN'), 
 ('ROLE_ADMIN'), 
 ('ROLE_CONTRIBUTOR'), 
 ('ROLE_MANAGER'), 
@@ -38,7 +37,7 @@ INSERT INTO `user_role`
 (`user_id`, 
  `role_name`) 
 VALUES 
-(1, 'ROLE_SYSADMIN'),
+(1, 'ROLE_ADMIN'),
 (2, 'ROLE_ADMIN'),
 (3, 'ROLE_CONTRIBUTOR'),
 (4, 'ROLE_CITITOR'),

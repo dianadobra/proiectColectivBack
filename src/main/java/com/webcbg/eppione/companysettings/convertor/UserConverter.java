@@ -23,7 +23,7 @@ public class UserConverter {
 	public User toEntity(final UserDTO userDTO, final User user) {
 		final Set<Role> role = new HashSet<>();
 		role.add(userDTO.getRole());
-		user.setAuthorities(role);
+		user.setRoles(role);
 		user.setDepartment(departmentRepository.findOne(userDTO.getDepartmentId()));
 		user.setEmail(userDTO.getEmail());
 		user.setFirstName(userDTO.getFirstName());
@@ -37,8 +37,8 @@ public class UserConverter {
 
 	public UserDTO toDTO(final User user) {
 		final UserDTO userDTO = new UserDTO();
-		final Set<Role> roles = user.getAuthorities();
-		final Iterator<Role> it = roles.iterator();
+		Set<Role> roles = user.getRoles();
+		Iterator<Role> it = roles.iterator();
 		userDTO.setRole(it.next());
 		userDTO.setDepartmentId(user.getDepartment().getId());
 		userDTO.setEmail(user.getEmail());
