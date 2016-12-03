@@ -27,8 +27,10 @@ public class Role implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Role SYSADMIN = new Role("ROLE_SYSADMIN");
-	public static Role USER = new Role("ROLE_USER");
+	public static Role ADMIN = new Role("ROLE_ADMIN");
+	public static Role MANAGER = new Role("ROLE_MANAGER");
+	public static Role CONTRIBUTOR = new Role("ROLE_CONTRIBUTOR");
+	public static Role READER = new Role("ROLE_READER");
 
 	@NotNull
 	@Size(min = 0, max = 50)
