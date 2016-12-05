@@ -18,7 +18,7 @@ public class Document {
 	@Id
 	@GeneratedValue
 	private Long id;
-	private Long guid;
+	private int guid;
 	private String name;
 	private DocumentStatus documentState;
 	private float version;
@@ -28,25 +28,21 @@ public class Document {
 	private String abstractInput;
 	private String keywords;
 	private boolean isSigned;
-	private ApprovalState approvalStatus;
+	private ApprovalStatus approvalStatus;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
-	private User creator;
+	private User author;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "signed_by_id")
 	private User signedBy;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "zone_id")
-	private DocumentZone zone;
-
 	public enum DocumentStatus {
 		Draft, Final, FinalUpdated, Blocked
 	}
 
-	public enum ApprovalState {
+	public enum ApprovalStatus {
 		Approved, Unapproved, NeedsRevision
 	}
 

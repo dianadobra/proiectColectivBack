@@ -25,7 +25,7 @@ public class DocumentZone {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "zone")
+	@OneToMany(fetch = FetchType.LAZY)
 	private List<Document> documents;
 
 }
