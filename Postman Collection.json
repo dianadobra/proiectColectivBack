@@ -20,6 +20,16 @@
 			"owner": "569773"
 		},
 		{
+			"id": "0e7fba22-ac33-de7b-6b96-16ae2192feaf",
+			"name": "Documents",
+			"description": "",
+			"order": [
+				"35486657-951f-b1a2-00b2-07257873abc2",
+				"e569ae07-8932-10fd-57e5-89594da12e90",
+				"5a0cc43e-af50-0470-0260-61be444c35d5"
+			]
+		},
+		{
 			"id": "58990d69-41d7-b6ca-faf2-9b0d272929e2",
 			"name": "Users",
 			"description": "",
@@ -100,6 +110,53 @@
 			"rawModeData": "{\n    \"name\":\"aaa\"\n}"
 		},
 		{
+			"id": "35486657-951f-b1a2-00b2-07257873abc2",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/documents",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "file",
+					"value": "Untitled.png",
+					"type": "file",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "abstractInput",
+					"value": "kjhjhkn",
+					"type": "text",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "keywords",
+					"value": "feafe",
+					"type": "text",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "signed",
+					"value": "true",
+					"type": "text",
+					"enabled": true,
+					"warning": ""
+				}
+			],
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1481219308270,
+			"name": "Upload Document",
+			"description": "",
+			"collectionId": "4597aa85-6f92-065c-3398-14da2889e84f",
+			"responses": []
+		},
+		{
 			"id": "3b117f91-3615-6893-0eed-5ecef9135661",
 			"headers": "Content-Type: application/x-www-form-urlencoded\n",
 			"url": "http://localhost:8080/eppione/api/login",
@@ -170,6 +227,27 @@
 			"responses": []
 		},
 		{
+			"id": "5a0cc43e-af50-0470-0260-61be444c35d5",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/documents/user/2",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "4597aa85-6f92-065c-3398-14da2889e84f",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get documents for user",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1481219445762,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "0e7fba22-ac33-de7b-6b96-16ae2192feaf"
+		},
+		{
 			"id": "982baec7-367d-73c4-c562-9d4d799ac669",
 			"headers": "",
 			"url": "http://localhost:8080/eppione/api/users/2",
@@ -221,12 +299,12 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1479753438311,
+			"time": 1479754953435,
 			"name": "Create User",
 			"description": "",
 			"collectionId": "4597aa85-6f92-065c-3398-14da2889e84f",
 			"responses": [],
-			"rawModeData": "{\r\n    \"email\":\"diana.dobra@servustech.com\",\r\n    \"firstName\":\"Diana\",\r\n    \"lastName\": \"Dobra\",\r\n    \"username\": \"dianadobra\",\r\n    \"password\": \"test\",\r\n    \"role\":\"ROLE_SYSADMIN\",\r\n    \"funtion\": \"teamlead\",\r\n    \"idSuperior\": 3,\r\n\t\"departmentId\":1\r\n    \r\n}"
+			"rawModeData": "{\r\n    \"email\":\"diana.dobra@servustech.com\",\r\n    \"firstName\":\"Diana\",\r\n    \"lastName\": \"Dobra\",\r\n    \"username\": \"dianaadobra\",\r\n    \"password\": \"test\",\r\n    \"role\":\"ROLE_SYSADMIN\",\r\n    \"funtion\": \"teamlead\",\r\n    \"idSuperior\": 3,\r\n\t\"departmentId\":1\r\n    \r\n}"
 		},
 		{
 			"id": "c15c3e27-89b8-80e8-3261-d2bf7e3d05bd",
@@ -267,6 +345,27 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"folder": "58990d69-41d7-b6ca-faf2-9b0d272929e2"
+		},
+		{
+			"id": "e569ae07-8932-10fd-57e5-89594da12e90",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/documents/1",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "4597aa85-6f92-065c-3398-14da2889e84f",
+			"data": null,
+			"dataMode": "params",
+			"name": "Download Document",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1481213549025,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "0e7fba22-ac33-de7b-6b96-16ae2192feaf"
 		},
 		{
 			"id": "eb50e662-c3c9-b896-3ff0-30f1c71f0a43",

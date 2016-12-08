@@ -31,7 +31,7 @@ public class Document {
 	private ApprovalStatus approvalStatus;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "author_id")
 	private User author;
 
 	@ManyToOne(fetch = FetchType.EAGER)
