@@ -95,4 +95,36 @@ public class DocumentService {
 			return null;
 		}
 	}
+
+	public DocumentDTO updateDocument(Long docId, DocumentDTO documentDTO, final MultipartFile document) {
+
+		Random random = new Random();
+
+		Document doc = documentRepository.findOne(docId);
+
+		doc = documentConverter.toEntity(documentDTO, doc);
+		doc.setApprovalStatus(ApprovalStatus.Unapproved);
+		doc.setDocumentState(DocumentStatus.Draft);
+		doc.setAuthor(userService.getCurrentUser());
+		doc.setUpdateDate(new Date());
+		doc.setVersion(doc.getVersion() + 0.1f);
+		if (documentDTO.isSigned()) {
+			doc.setSignedBy(userService.getCurrentUser());
+		}
+
+		if (document != null) {
+			doc.setName(document.getOriginalFilename());
+			String path;
+			try {
+				path = fileService.uploadFile(document,
+						fileService.getFilePath(document, "cpds", Long.valueOf(random.nextInt(999) + 1)));
+				doc.setDocumentUrl(path);
+			} catch (IOException e) {
+				throw new InvalidDataException("Error uploading file!", "file.upload.fail");
+			}
+		}
+		doc = documentRepository.save(doc);
+
+		return documentConverter.toDTO(doc);
+	}
 }

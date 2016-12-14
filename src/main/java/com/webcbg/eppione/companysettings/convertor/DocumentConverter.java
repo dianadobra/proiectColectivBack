@@ -21,6 +21,7 @@ public class DocumentConverter {
 
 	public DocumentDTO toDTO(final Document document) {
 		final DocumentDTO documentDTO = new DocumentDTO();
+		documentDTO.setId(document.getId());
 		documentDTO.setAbstractInput(document.getAbstractInput());
 		documentDTO.setKeywords(document.getKeywords());
 		documentDTO.setSigned(document.isSigned());

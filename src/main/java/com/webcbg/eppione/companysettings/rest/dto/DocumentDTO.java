@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class DocumentDTO {
 
+	private Long id;
 	private String abstractInput;
 	private String keywords;
 	private boolean signed;
