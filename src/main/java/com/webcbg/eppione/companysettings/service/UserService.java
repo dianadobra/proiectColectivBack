@@ -33,12 +33,6 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	// Gets the current logged in user
-	@org.springframework.transaction.annotation.Transactional(readOnly = true)
-	public User getCurrentUser() {
-		return userRepository.findOneByUsername(SecurityUtils.getCurrentUserLogin()).get();
-	}
-
 	public UserDTO createUser(final UserDTO userDTO) {
 		User user = new User();
 		if (userRepository.findOneByUsername(userDTO.getUsername()).isPresent()) {
@@ -88,6 +82,10 @@ public class UserService {
 
 	public UserDTO getById(final Long userId) {
 		return userConverter.toDTO(userRepository.findOne(userId));
+	}
+
+	public User getUser(Long userId) {
+		return userRepository.findOne(userId);
 	}
 
 }

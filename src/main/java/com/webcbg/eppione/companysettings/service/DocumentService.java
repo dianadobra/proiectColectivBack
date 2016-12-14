@@ -45,12 +45,12 @@ public class DocumentService {
 		doc.setApprovalStatus(ApprovalStatus.Unapproved);
 		doc.setDocumentState(DocumentStatus.Draft);
 		doc.setGuid(random.nextInt(999 - 100) + 100);
-		doc.setAuthor(userService.getCurrentUser());
+		doc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
 		doc.setCreationDate(new Date());
 		doc.setUpdateDate(new Date());
 		doc.setVersion(0.1f);
 		if (documentDTO.isSigned()) {
-			doc.setSignedBy(userService.getCurrentUser());
+			doc.setSignedBy(userService.getUser(documentDTO.getAuthorId()));
 		}
 
 		if (document != null) {
@@ -58,7 +58,7 @@ public class DocumentService {
 			String path;
 			try {
 				path = fileService.uploadFile(document,
-						fileService.getFilePath(document, "cpds", Long.valueOf(random.nextInt(999) + 1)));
+						fileService.getFilePath(document, "documents", Long.valueOf(random.nextInt(999) + 1)));
 				doc.setDocumentUrl(path);
 			} catch (IOException e) {
 				throw new InvalidDataException("Error uploading file!", "file.upload.fail");
@@ -101,30 +101,35 @@ public class DocumentService {
 		Random random = new Random();
 
 		Document doc = documentRepository.findOne(docId);
+		Document newDoc = documentConverter.toEntity(documentDTO, doc);
+		newDoc.setGuid(doc.getGuid());
+		newDoc.setApprovalStatus(ApprovalStatus.Unapproved);
+		newDoc.setDocumentState(DocumentStatus.Draft);
+		newDoc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
+		newDoc.setUpdateDate(new Date());
+		if (newDoc.getVersion() < 1) {
+			newDoc.setVersion(doc.getVersion() + 0.1f);
+		} else {
+			newDoc.setVersion(doc.getVersion() + 1f);
+		}
 
-		doc = documentConverter.toEntity(documentDTO, doc);
-		doc.setApprovalStatus(ApprovalStatus.Unapproved);
-		doc.setDocumentState(DocumentStatus.Draft);
-		doc.setAuthor(userService.getCurrentUser());
-		doc.setUpdateDate(new Date());
-		doc.setVersion(doc.getVersion() + 0.1f);
 		if (documentDTO.isSigned()) {
-			doc.setSignedBy(userService.getCurrentUser());
+			newDoc.setSignedBy(userService.getUser(documentDTO.getAuthorId()));
 		}
 
 		if (document != null) {
-			doc.setName(document.getOriginalFilename());
+			newDoc.setName(document.getOriginalFilename());
 			String path;
 			try {
 				path = fileService.uploadFile(document,
-						fileService.getFilePath(document, "cpds", Long.valueOf(random.nextInt(999) + 1)));
-				doc.setDocumentUrl(path);
+						fileService.getFilePath(document, "documents", Long.valueOf(random.nextInt(999) + 1)));
+				newDoc.setDocumentUrl(path);
 			} catch (IOException e) {
 				throw new InvalidDataException("Error uploading file!", "file.upload.fail");
 			}
 		}
-		doc = documentRepository.save(doc);
+		newDoc = documentRepository.save(newDoc);
 
-		return documentConverter.toDTO(doc);
+		return documentConverter.toDTO(newDoc);
 	}
 }

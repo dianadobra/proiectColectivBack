@@ -25,5 +25,6 @@ public class DocumentDTO {
 	private ApprovalStatus approvalStatus;
 	private String username;
 	private String signedByName;
+	private Long authorId;
 
 }

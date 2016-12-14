@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.webcbg.eppione.companysettings.rest.dto.ErrorInfo;
-import com.webcbg.eppione.companysettings.service.errors.AuthenticationException;
 import com.webcbg.eppione.companysettings.service.errors.ConstraintViolationException;
 import com.webcbg.eppione.companysettings.service.errors.InvalidDataException;
 import com.webcbg.eppione.companysettings.service.errors.ResourceAlreadyExistException;
@@ -81,14 +80,15 @@ public class GlobalControllerExceptionHandler {
 				.internalCode(40402).developerMessage(e.getMessage()).build();
 	}
 
-	@ExceptionHandler(value = { AuthenticationException.class })
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	public ErrorInfo handleAuthenticationException(final HttpServletRequest request, final AuthenticationException e) {
-		return ErrorInfo.builder().status(HttpStatus.UNAUTHORIZED.value())
-				.messageKey(e.getMessageKey()).message(messageSource.getMessage(e.getMessageKey(),
-						e.getMessageArguments(), e.getMessage(), Locale.ENGLISH))
-				.internalCode(40101).developerMessage(e.getMessage()).build();
-	}
+	// @ExceptionHandler(value = { AuthenticationException.class })
+	// @ResponseStatus(HttpStatus.UNAUTHORIZED)
+	// public ErrorInfo handleAuthenticationException(final HttpServletRequest
+	// request, final AuthenticationException e) {
+	// return ErrorInfo.builder().status(HttpStatus.UNAUTHORIZED.value())
+	// .messageKey(e.getMessageKey()).message(messageSource.getMessage(e.getMessageKey(),
+	// e.getMessageArguments(), e.getMessage(), Locale.ENGLISH))
+	// .internalCode(40101).developerMessage(e.getMessage()).build();
+	// }
 
 	@ExceptionHandler(value = { Exception.class })
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

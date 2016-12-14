@@ -1,8 +1,10 @@
 package com.webcbg.eppione.companysettings.rest;
 
 import java.net.URLConnection;
+import java.util.Enumeration;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -33,12 +35,17 @@ public class DocumentResource {
 
 	@RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@RequestParam(name = "file", required = false) final MultipartFile file,
-			@Valid @ModelAttribute DocumentDTO documentDTO, BindingResult result) {
+			@Valid @ModelAttribute DocumentDTO documentDTO, BindingResult result, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
 			return new ResponseEntity<>(
 					ErrorInfoFactory.buildBadRequestErrorInfo("Document fields are incorrect", "document", result),
 					HttpStatus.BAD_REQUEST);
+		}
+
+		Enumeration<String> attributeNames = request.getSession().getAttributeNames();
+		while (attributeNames.hasMoreElements()) {
+			System.out.println("\n\n" + attributeNames.nextElement().toString());
 		}
 
 		DocumentDTO document = documentService.addDocument(documentDTO, file);
