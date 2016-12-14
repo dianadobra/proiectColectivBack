@@ -132,4 +132,17 @@ public class DocumentService {
 
 		return documentConverter.toDTO(newDoc);
 	}
+
+	public byte[] downloadTemplate() {
+
+		final String path = "C:/Users/Public/iTeam/template.docx";
+
+		try {
+			return fileService.getDocument(path);
+		} catch (IOException e) {
+			throw new ResourceNotFoundException("Document not found", "document.not.found");
+		}
+
+	}
+
 }

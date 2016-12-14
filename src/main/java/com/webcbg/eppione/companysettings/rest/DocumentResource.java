@@ -1,7 +1,6 @@
 package com.webcbg.eppione.companysettings.rest;
 
 import java.net.URLConnection;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,11 +42,6 @@ public class DocumentResource {
 					HttpStatus.BAD_REQUEST);
 		}
 
-		Enumeration<String> attributeNames = request.getSession().getAttributeNames();
-		while (attributeNames.hasMoreElements()) {
-			System.out.println("\n\n" + attributeNames.nextElement().toString());
-		}
-
 		DocumentDTO document = documentService.addDocument(documentDTO, file);
 		return new ResponseEntity<>(document, HttpStatus.OK);
 	}
@@ -67,6 +61,27 @@ public class DocumentResource {
 			responseHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 		}
 		response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", doc.getName()));
+		if (document != null) {
+			return new ResponseEntity<>(document, responseHeaders, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(document, responseHeaders, HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@RequestMapping(value = "/template", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<byte[]> downloadTemplate(HttpServletResponse response) {
+
+		final HttpHeaders responseHeaders = new HttpHeaders();
+		byte[] document = documentService.downloadTemplate();
+		try {
+			String mimeType = URLConnection.guessContentTypeFromName("template.docx");
+			responseHeaders.setContentType(MediaType.valueOf(mimeType));
+			response.setContentType(mimeType);
+
+		} catch (Exception e) {
+			responseHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		}
+		response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", "template.docx"));
 		if (document != null) {
 			return new ResponseEntity<>(document, responseHeaders, HttpStatus.OK);
 		} else {
