@@ -25,10 +25,9 @@ import com.webcbg.eppione.companysettings.service.errors.ResourceAlreadyExistExc
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @SpringApplicationConfiguration(classes = EppioneApplication.class)
-public class DepartmentIT {
+public class UserIT {
 
 	private Department department;
-	private DepartmentDTO departmentDTO;
 
 	@Autowired
 	DepartmentRepository departmentRepository;
@@ -57,15 +56,6 @@ public class DepartmentIT {
 		Long id = department.getId();
 		department = departmentRepository.findOne(id);
 		assertThat("Created department should exist!", department, not(nullValue()));
-	}
-
-	@Test
-	@Transactional
-	public void createTheDepartment() {
-		DepartmentDTO d = new DepartmentDTO();
-		d.setName("NewTest");
-		departmentDTO = departmentService.createDepartment(d);
-		assertThat("Created departmentDTO should exist!", departmentDTO, not(nullValue()));
 	}
 
 	/*
