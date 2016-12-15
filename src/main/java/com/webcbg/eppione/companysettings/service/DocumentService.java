@@ -143,6 +143,11 @@ public class DocumentService {
 			throw new ResourceNotFoundException("Document not found", "document.not.found");
 		}
 
+	public void deleteDocument(Long docId) {
+		Document doc = documentRepository.findOne(docId);
+		if (doc == null) {
+			throw new ResourceNotFoundException("Document not found!");
+		}
+		documentRepository.delete(doc);
 	}
-
 }
