@@ -29,6 +29,7 @@ public class DepartmentIT {
 
 	private Department department;
 	private DepartmentDTO departmentDTO;
+	private DepartmentDTO departmentDTOO;
 
 	@Autowired
 	DepartmentRepository departmentRepository;
@@ -68,31 +69,36 @@ public class DepartmentIT {
 		assertThat("Created departmentDTO should exist!", departmentDTO, not(nullValue()));
 	}
 
-	/*
-	 * @Test
-	 *
-	 * @Transactional public void updateNewDepartment() { department =
-	 * departmentRepository.save(department);
-	 *
-	 * assertThat("Updated department should exist", department,
-	 * not(nullValue())); }
-	 */
+	@Test
+	@Transactional
+	public void updateTheDepartment() {
+		DepartmentDTO d = new DepartmentDTO();
+		d.setName("NewTest");
+		departmentDTO = departmentService.createDepartment(d);
+		String s = departmentDTO.getName();
+		// System.out.println(s);
+		DepartmentDTO dd = new DepartmentDTO();
+		dd.setName("Update");
+		departmentDTOO = departmentService.createDepartment(dd);
+		departmentDTO = departmentService.updateDepartment(departmentDTOO, departmentDTO.getId());
+		// System.out.println(departmentDTO.getName());
+		String ss = departmentDTO.getName();
+		assertThat("Update should change the name!", s, not(ss));
+	}
 
 	@Test
 	@Transactional
-	public void deleteNewDepartament() throws Exception {
+	public void deleteTheDepartament() throws Exception {
 
+		DepartmentDTO d = new DepartmentDTO();
+		d.setName("DeleteTest");
+		departmentDTOO = departmentService.createDepartment(d);
+		d = departmentService.getById(departmentDTOO.getId());
+		departmentService.deleteDepartment(d.getId());
+		// d = departmentService.getById(departmentDTOO.getId());
 		try {
-			Department dep = new Department("TestDelete");
-			Department de = new Department("Muhaha");
-			department = departmentRepository.save(dep);
-			department = departmentRepository.saveAndFlush(de);
-			Long id = department.getId();
-			// System.out.println(id);
-			// departmentRepository.delete(id);
-			department = departmentRepository.findOne(id);
-			// System.out.println(department);
-			assertThat("Deleted department should not exist", department, not(nullValue()));
+			assertThat("Deleted departmentDTO should not exist!", departmentService.getById(departmentDTOO.getId()),
+					(nullValue()));
 		} catch (Exception e) {
 			System.out.println("It's deleted!");
 		}

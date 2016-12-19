@@ -4,8 +4,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,88 +13,95 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.webcbg.eppione.EppioneApplication;
-import com.webcbg.eppione.companysettings.convertor.DepartmentConvertor;
-import com.webcbg.eppione.companysettings.model.Department;
-import com.webcbg.eppione.companysettings.repository.DepartmentRepository;
-import com.webcbg.eppione.companysettings.rest.dto.DepartmentDTO;
-import com.webcbg.eppione.companysettings.service.DepartmentService;
-import com.webcbg.eppione.companysettings.service.errors.ResourceAlreadyExistException;
+import com.webcbg.eppione.companysettings.convertor.UserConverter;
+import com.webcbg.eppione.companysettings.model.User;
+import com.webcbg.eppione.companysettings.repository.UserRepository;
+import com.webcbg.eppione.companysettings.rest.dto.UserDTO;
+import com.webcbg.eppione.companysettings.service.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @SpringApplicationConfiguration(classes = EppioneApplication.class)
 public class UserIT {
 
-	private Department department;
+	private User user;
+	private UserDTO userDTO;
+	private UserDTO userDTOO;
 
 	@Autowired
-	DepartmentRepository departmentRepository;
+	UserRepository userRepository;
 
 	@Autowired
-	DepartmentService departmentService;
+	UserService userService;
 
 	@Autowired
-	DepartmentConvertor departmentConverter;
+	UserConverter userConverter;
 
-	@Before
-	public void setup() {
-		department = new Department("unul nou");
-	}
-
-	@After
-	public void cleanup() {
-		departmentRepository.delete(department);
+	@Test
+	@Transactional
+	public void createTheUser() {
+		UserDTO u = new UserDTO();
+		u.setDepartmentId(Long.valueOf(1));
+		u.setEmail("test@mail.com");
+		u.setFirstName("test");
+		u.setLastName("teest");
+		u.setFunction("Boss");
+		u.setIdSuperior(Long.valueOf(1));
+		u.setPassword("test");
+		u.setUsername("test");
+		userDTO = userService.createUser(u);
+		assertThat("Created userDTO should exist!", userDTO, not(nullValue()));
+		// System.out.println(userDTO);
 	}
 
 	@Test
 	@Transactional
-	public void createNewDepartment() {
-		Department dep = new Department("TestCreate");
-		department = departmentRepository.save(dep);
-		Long id = department.getId();
-		department = departmentRepository.findOne(id);
-		assertThat("Created department should exist!", department, not(nullValue()));
-	}
+	public void updateTheUser() {
+		UserDTO us = new UserDTO();
+		us.setDepartmentId(Long.valueOf(2));
+		us.setEmail("tes2t@mail.com");
+		us.setFirstName("test2");
+		us.setLastName("teest2");
+		us.setFunction("Boss2");
+		us.setIdSuperior(Long.valueOf(2));
+		us.setPassword("test2");
+		us.setUsername("test2");
+		userDTO = userService.createUser(us);
+		String s = userDTO.getUsername();
 
-	/*
-	 * @Test
-	 *
-	 * @Transactional public void updateNewDepartment() { department =
-	 * departmentRepository.save(department);
-	 *
-	 * assertThat("Updated department should exist", department,
-	 * not(nullValue())); }
-	 */
+		UserDTO n = new UserDTO();
+		n.setDepartmentId(Long.valueOf(2));
+		n.setEmail("update@mail.com");
+		n.setFirstName("update");
+		n.setLastName("update");
+		n.setFunction("update");
+		n.setIdSuperior(Long.valueOf(2));
+		n.setPassword("update");
+		n.setUsername("update");
+		userDTOO = userService.createUser(n);
+		// userDTO = userService.updateUser(userDTO.getDepartmentId(),
+		// userDTOO);
+		// System.out.println(userDTO);
+		userDTO.setUsername("updateTest");
+		String ss = userDTO.getUsername();
+		assertThat("Update should change the name!", s, not(ss));
+	}
 
 	@Test
 	@Transactional
-	public void deleteNewDepartament() throws Exception {
-
-		try {
-			Department dep = new Department("TestDelete");
-			Department de = new Department("Muhaha");
-			department = departmentRepository.save(dep);
-			department = departmentRepository.saveAndFlush(de);
-			Long id = department.getId();
-			// System.out.println(id);
-			// departmentRepository.delete(id);
-			department = departmentRepository.findOne(id);
-			// System.out.println(department);
-			assertThat("Deleted department should not exist", department, not(nullValue()));
-		} catch (Exception e) {
-			System.out.println("It's deleted!");
-		}
+	public void deleteTheUser() throws Exception {
+		UserDTO d = new UserDTO();
+		d.setDepartmentId(Long.valueOf(3));
+		d.setEmail("update@mail.com");
+		d.setFirstName("update");
+		d.setLastName("update");
+		d.setFunction("update");
+		d.setIdSuperior(Long.valueOf(3));
+		d.setPassword("update");
+		d.setUsername("update");
+		userDTO = userService.createUser(d);
+		d = userService.getById(userDTO.getIdSuperior());
+		userService.deleteUser(d.getIdSuperior());
+		assertThat("Created userDTO should exist!", userDTO, not(nullValue()));
 	}
-
-	@Test(expected = ResourceAlreadyExistException.class)
-	public void whenCreateDepartmentThatAlreadyExistInCompany_AnExceptionIsThrown() {
-		final DepartmentDTO oldDep = departmentConverter.toDTO(department);
-		final DepartmentDTO newDep = departmentService.createDepartment(oldDep);
-		assertThat("Created department should exist", newDep, not(nullValue()));
-
-		final Department newdDepartment = new Department("unul nou");
-		final DepartmentDTO newdDepartmentDTO = departmentConverter.toDTO(newdDepartment);
-		departmentService.createDepartment(newdDepartmentDTO);
-	}
-
 }
