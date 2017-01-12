@@ -34,7 +34,8 @@ public class DocumentConverter {
 		documentDTO.setUsername(document.getAuthor().getFirstName() + " " + document.getAuthor().getLastName());
 		documentDTO.setSignedByName(document.getSignedBy() == null ? null
 				: document.getSignedBy().getFirstName() + " " + document.getSignedBy().getLastName());
-
+		documentDTO.setGuid(document.getGuid());
+		
 		return documentDTO;
 	}
 

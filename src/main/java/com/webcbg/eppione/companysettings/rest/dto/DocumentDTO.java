@@ -26,5 +26,6 @@ public class DocumentDTO {
 	private String username;
 	private String signedByName;
 	private Long authorId;
+	private int guid;
 
 }

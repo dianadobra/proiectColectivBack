@@ -11,5 +11,7 @@ import com.webcbg.eppione.companysettings.model.Document;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	List<Document> findAllByAuthorId(Long authorId);
+	
+	List<Document> findAllByName(String name);
 
 }

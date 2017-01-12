@@ -25,5 +25,9 @@ public class GenericPerson {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "funding_id")
 	private Funding funding;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "flow_id")
+	private Flow flow;
 
 }

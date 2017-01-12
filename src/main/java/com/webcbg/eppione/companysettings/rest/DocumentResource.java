@@ -116,5 +116,18 @@ public class DocumentResource {
 		final List<DocumentDTO> documents = documentService.getAllDocuments(userId);
 		return new ResponseEntity<>(documents, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/{docId}/status", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> changeStatus(@PathVariable("docId") long docId,
+			@RequestParam(name = "status", required = true) final String status) {
+		documentService.changeStatus(status, docId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{docId}/user/{userId}/sign", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> update(@PathVariable("docId") long docId, @PathVariable("userId") long userId) {
+		documentService.sign(docId, userId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 }

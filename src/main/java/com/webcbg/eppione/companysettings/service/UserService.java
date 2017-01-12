@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.webcbg.eppione.companysettings.convertor.UserConverter;
 import com.webcbg.eppione.companysettings.model.User;
+import com.webcbg.eppione.companysettings.model.User.Function;
 import com.webcbg.eppione.companysettings.repository.UserRepository;
 import com.webcbg.eppione.companysettings.rest.dto.UserDTO;
 import com.webcbg.eppione.companysettings.service.errors.ResourceAlreadyExistException;
@@ -86,6 +87,14 @@ public class UserService {
 
 	public User getUser(Long userId) {
 		return userRepository.findOne(userId);
+	}
+	
+	public User getByFunctionAndDepartmentId(Function function, Long id){
+		return this.userRepository.findByFunctionAndDepartment_Id(function, id);
+	}
+	
+	public User getByFunction(Function function) {
+		return this.userRepository.findByFunction(function);
 	}
 
 }

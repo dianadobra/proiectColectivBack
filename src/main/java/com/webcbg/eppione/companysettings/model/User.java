@@ -1,6 +1,8 @@
 package com.webcbg.eppione.companysettings.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -33,7 +35,7 @@ public class User {
 	private String lastName;
 	@JsonIgnore
 	private String password;
-	private String function;
+	private Function function;
 	private Long idSuperior;
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -45,5 +47,31 @@ public class User {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "department_id")
 	private Department department;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_awaiting_flows", joinColumns = {
+			@JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "flow_id", referencedColumnName = "id") })
+	private List<Flow> awaitingFlows = new ArrayList<>();
+	
+	
+	public enum Function{
+		DirectorDepartament, 
+		Decan, 
+		DirectorScoalaDoctorala, 
+		SefDirect, 
+		Rector, 
+		DirectorGrant, 
+		DirectorProiect, 
+		DirectiaFinanciarContabila, 
+		CMCS, 
+		Programmer,
+		Student,
+		CadruDidactic,
+		AngajatExclusivInProiecte,
+		ProfesorPensionar,
+		PersonalAdministrativ
+
+	}
 
 }

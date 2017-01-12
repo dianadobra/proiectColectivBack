@@ -15,6 +15,7 @@ import com.webcbg.eppione.companysettings.convertor.DocumentConverter;
 import com.webcbg.eppione.companysettings.model.Document;
 import com.webcbg.eppione.companysettings.model.Document.ApprovalStatus;
 import com.webcbg.eppione.companysettings.model.Document.DocumentStatus;
+import com.webcbg.eppione.companysettings.model.User;
 import com.webcbg.eppione.companysettings.repository.DocumentRepository;
 import com.webcbg.eppione.companysettings.rest.dto.DocumentDTO;
 import com.webcbg.eppione.companysettings.service.errors.InvalidDataException;
@@ -44,17 +45,24 @@ public class DocumentService {
 		doc = documentConverter.toEntity(documentDTO, doc);
 		doc.setApprovalStatus(ApprovalStatus.Unapproved);
 		doc.setDocumentState(DocumentStatus.Draft);
-		doc.setGuid(random.nextInt(999 - 100) + 100);
 		doc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
 		doc.setCreationDate(new Date());
 		doc.setUpdateDate(new Date());
-		doc.setVersion(0.1f);
 		if (documentDTO.isSigned()) {
 			doc.setSignedBy(userService.getUser(documentDTO.getAuthorId()));
 		}
-
 		if (document != null) {
+			List<Document> previousDocuments = this.documentRepository.findAllByName(document.getOriginalFilename());
+			
 			doc.setName(document.getOriginalFilename());
+			if (previousDocuments.size()>0){
+				doc.setVersion(previousDocuments.get(previousDocuments.size()-1).getVersion()+0.1f);
+				doc.setGuid(previousDocuments.get(0).getGuid());
+			}else{
+				doc.setVersion(0.1f);
+				doc.setGuid(random.nextInt(999 - 100) + 100);
+			}
+
 			String path;
 			try {
 				path = fileService.uploadFile(document,
@@ -63,6 +71,9 @@ public class DocumentService {
 			} catch (IOException e) {
 				throw new InvalidDataException("Error uploading file!", "file.upload.fail");
 			}
+		}else{
+			doc.setVersion(0.1f);
+			doc.setGuid(random.nextInt(999 - 100) + 100);
 		}
 		doc = documentRepository.save(doc);
 
@@ -128,6 +139,8 @@ public class DocumentService {
 				throw new InvalidDataException("Error uploading file!", "file.upload.fail");
 			}
 		}
+		doc.setDocumentState(DocumentStatus.Draft);
+		documentRepository.save(doc);
 		newDoc = documentRepository.save(newDoc);
 
 		return documentConverter.toDTO(newDoc);
@@ -150,5 +163,34 @@ public class DocumentService {
 			throw new ResourceNotFoundException("Document not found!");
 		}
 		documentRepository.delete(doc);
+	}
+	
+	public void changeStatus(String status, Long docId){
+		Document doc = documentRepository.findOne(docId);
+		if (doc == null) {
+			throw new ResourceNotFoundException("Document not found!");
+		}
+		doc.setDocumentState(DocumentStatus.valueOf(status));
+		if (DocumentStatus.valueOf(status).equals(DocumentStatus.Draft)){
+			doc.setVersion(doc.getVersion()/10);
+		}else if (DocumentStatus.valueOf(status).equals(DocumentStatus.Final)){
+			doc.setVersion(doc.getVersion()*10);
+		}
+		
+		this.documentRepository.save(doc);
+	}
+	
+	public void sign(Long docId, Long userId){
+		Document doc = documentRepository.findOne(docId);
+		if (doc == null) {
+			throw new ResourceNotFoundException("Document not found!");
+		}
+		User user = this.userService.getUser(userId);
+		if (user == null) {
+			throw new ResourceNotFoundException("User not found!");
+		}
+		doc.setSigned(true);
+		doc.setSignedBy(user);
+		this.documentRepository.save(doc);
 	}
 }

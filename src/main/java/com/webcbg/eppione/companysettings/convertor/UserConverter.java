@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.webcbg.eppione.companysettings.model.Role;
 import com.webcbg.eppione.companysettings.model.User;
+import com.webcbg.eppione.companysettings.model.User.Function;
 import com.webcbg.eppione.companysettings.repository.DepartmentRepository;
 import com.webcbg.eppione.companysettings.rest.dto.UserDTO;
 
@@ -27,7 +28,7 @@ public class UserConverter {
 		user.setDepartment(departmentRepository.findOne(userDTO.getDepartmentId()));
 		user.setEmail(userDTO.getEmail());
 		user.setFirstName(userDTO.getFirstName());
-		user.setFunction(userDTO.getFunction());
+		user.setFunction(Function.valueOf(userDTO.getFunction()));
 		user.setIdSuperior(userDTO.getIdSuperior());
 		user.setLastName(userDTO.getLastName());
 		user.setUsername(userDTO.getUsername());
@@ -43,7 +44,7 @@ public class UserConverter {
 		userDTO.setDepartmentId(user.getDepartment().getId());
 		userDTO.setEmail(user.getEmail());
 		userDTO.setFirstName(user.getFirstName());
-		userDTO.setFunction(user.getFunction());
+		userDTO.setFunction(user.getFunction().toString());
 		userDTO.setIdSuperior(user.getIdSuperior());
 		userDTO.setLastName(user.getLastName());
 		userDTO.setUsername(user.getUsername());
