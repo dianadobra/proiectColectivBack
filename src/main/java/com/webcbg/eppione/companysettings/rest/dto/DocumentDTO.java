@@ -31,5 +31,6 @@ public class DocumentDTO {
 	private String signedByName;
 	private Long authorId;
 	private int guid;
+	private String downloadUrl;
 
 }

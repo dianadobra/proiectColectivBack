@@ -7,5 +7,7 @@ import com.webcbg.eppione.companysettings.model.Funding;
 public interface FundingRepository extends JpaRepository<Funding, Long> {
 	
 	Funding findOneByType(String type);
+	
+	Funding findOneById(Long id);
 
 }

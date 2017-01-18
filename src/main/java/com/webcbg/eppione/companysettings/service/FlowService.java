@@ -19,6 +19,8 @@ import com.webcbg.eppione.companysettings.model.User.Function;
 import com.webcbg.eppione.companysettings.repository.DocumentRepository;
 import com.webcbg.eppione.companysettings.repository.FlowRepository;
 import com.webcbg.eppione.companysettings.repository.FundingRepository;
+import com.webcbg.eppione.companysettings.repository.GenericPersonRepository;
+import com.webcbg.eppione.companysettings.repository.UserRepository;
 import com.webcbg.eppione.companysettings.rest.dto.FlowDTO;
 
 @Service
@@ -40,6 +42,13 @@ public class FlowService {
 	@Autowired 
 	private FundingRepository fundingRepository;
 	
+	@Autowired 
+	private UserRepository userRepository;
+	
+	@Autowired
+	private GenericPersonRepository genericPersonRepository;
+
+	
 	public FlowDTO createFlow(FlowDTO flowDTO){
 		Flow flow = new Flow();
 		flow = this.flowConveter.toEntity(flowDTO, flow);
@@ -54,36 +63,51 @@ public class FlowService {
 		cal.add(Calendar.DAY_OF_MONTH, flowDTO.getReviewTime());
 		flow.setDeadline(cal.getTime());
 		
+		flow.setDocuments(new ArrayList<>());
 		for(Long id: flowDTO.getDocumentsIds()){
 			flow.getDocuments().add(this.documentRepository.findOne(id));
 		}
-		Funding funding = this.fundingRepository.findOneByType(flowDTO.getFundingType());
+
+		Funding funding = this.fundingRepository.findOneById(flowDTO.getFundingTypeId());
 		flow.setFunding(funding);
+		
+		flow.setActive(true);
+		
+		User superior = null;
 		
 		List<GenericPerson> genericPersons = new ArrayList<>();
 		
-		if (flowDTO.getFundingType().equals("Fara Finantare")){
+		if (funding.getType().equals("Fara finantare")){
 			GenericPerson genericPerson = new GenericPerson();
 			genericPerson.setFlow(flow);
 			genericPerson.setFunding(funding);
 			genericPerson.setHasApproved(false);
 			if (creator.getFunction().equals(Function.Student) || creator.getFunction().equals(Function.CadruDidactic)){	
-				genericPerson.setUser(this.userService.getByFunctionAndDepartmentId(Function.DirectorDepartament, creator.getDepartment().getId()));	
+				superior = this.userService.getByFunctionAndDepartmentId(Function.DirectorDepartament, creator.getDepartment().getId());
+				genericPerson.setUser(superior);	
 				genericPersons.add(genericPerson);
+				this.genericPersonRepository.save(genericPerson);
+				
 			}
 			if (creator.getFunction().equals(Function.AngajatExclusivInProiecte)){
-				genericPerson.setUser(this.userService.getByFunction(Function.Decan));
+				superior = this.userService.getByFunction(Function.Decan);
+				genericPerson.setUser(superior);
 				genericPersons.add(genericPerson);
+				this.genericPersonRepository.save(genericPerson);
 			}
 			if (creator.getFunction().equals(Function.ProfesorPensionar)){
-				genericPerson.setUser(this.userService.getByFunction(Function.DirectorScoalaDoctorala));
+				superior = this.userService.getByFunction(Function.DirectorScoalaDoctorala);
+				genericPerson.setUser(superior);
 				genericPersons.add(genericPerson);
+				this.genericPersonRepository.save(genericPerson);
 			}
 			if (creator.getFunction().equals(Function.PersonalAdministrativ)){
-				genericPerson.setUser(this.userService.getByFunction(Function.SefDirect));
+				superior = this.userService.getByFunction(Function.SefDirect);
+				genericPerson.setUser(superior);
 				genericPersons.add(genericPerson);
+				this.genericPersonRepository.save(genericPerson);
 			}
-		} else if (flowDTO.getFundingType().equals("Finantare din bugetul facultatii")){
+		} else if (flow.getFunding().getType().equals("Finantare din bugetul facultatii")){
 			GenericPerson genericPerson = new GenericPerson();
 			genericPerson.setFlow(flow);
 			genericPerson.setFunding(funding);
@@ -96,7 +120,34 @@ public class FlowService {
 		
 		
 		}
+		
+		flow.setGenericPersons(new ArrayList<>());
+		flow.getGenericPersons().addAll(genericPersons);
+		
+		this.flowRepository.save(flow);
+		
+		if (superior.getAwaitingFlows()==null){
+			superior.setAwaitingFlows(new ArrayList<>());
+		}
+		superior.getAwaitingFlows().add(flow);
+		userRepository.save(superior);
 
-		return flowDTO;
+		return this.flowConveter.toDto(flow);
+	}
+	
+	public List<Funding> getAllFundings(){
+		return this.fundingRepository.findAll();
+	}
+	
+	public List<FlowDTO> getGenericPersonFlows(Long userId){
+		return this.flowConveter.toDtoList(this.userRepository.findOne(userId).getAwaitingFlows());
+	}
+
+	public List<FlowDTO> getUserFlow(Long userId) {
+		return this.flowConveter.toDtoList(this.flowRepository.findAllByCreator_IdAndIsActive(userId, true));
+	}
+	
+	public List<FlowDTO> getFinishedFlows(Long userId){
+		return this.flowConveter.toDtoList(this.flowRepository.findAllByCreator_IdAndIsActive(userId, false));
 	}
 }

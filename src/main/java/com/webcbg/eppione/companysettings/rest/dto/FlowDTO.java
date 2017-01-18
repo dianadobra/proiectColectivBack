@@ -15,7 +15,7 @@ public class FlowDTO {
 	private Long creatorId;
 	private String fundingType;
 	private Long fundingTypeId;
-	private List<String> documentsUrls;
+	private List<DocumentDTO> documents;
 	private List<Long> documentsIds;
 
 }

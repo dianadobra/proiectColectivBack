@@ -85,7 +85,7 @@ public class DocumentService {
 	}
 
 	public List<DocumentDTO> getAllDocuments(Long userId) {
-		return documentConverter.toDtoList(documentRepository.findAllByAuthorId(userId));
+		return documentConverter.toDtoList(documentRepository.findAllByAuthorIdOrderByGuidAsc(userId));
 	}
 
 	public byte[] downloadDocument(final long docId) {

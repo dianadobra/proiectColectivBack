@@ -35,6 +35,7 @@ public class DocumentConverter {
 		documentDTO.setSignedByName(document.getSignedBy() == null ? null
 				: document.getSignedBy().getFirstName() + " " + document.getSignedBy().getLastName());
 		documentDTO.setGuid(document.getGuid());
+		documentDTO.setDownloadUrl("http://localhost:8080/eppione/api/documents/" + document.getId());
 		
 		return documentDTO;
 	}
