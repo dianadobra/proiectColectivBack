@@ -28,7 +28,21 @@
 				"0a7f86aa-a84d-24a3-d5a1-1da13eac0696",
 				"2c102207-0453-f69f-c81d-ac90d9a8b37c",
 				"41b5b0c0-6748-1645-1141-796aba566309",
-				"26186870-1067-9874-6728-c420c1879433"
+				"26186870-1067-9874-6728-c420c1879433",
+				"98502c0c-2802-5495-57b2-3fbbc2bd7faf"
+			],
+			"owner": 0
+		},
+		{
+			"id": "13294fe2-5b70-33ae-594f-06eabb2ccac8",
+			"name": "Flows",
+			"description": "",
+			"order": [
+				"6296c41f-5c76-08d7-6405-9c35f9a6a4a7",
+				"d2282f8b-9d6e-b4ce-1c58-b342878abcab",
+				"901f85af-7e42-b977-914c-0345892bc90d",
+				"de9084b0-8e5c-2d3b-a953-1b651e97b059",
+				"5ed0a980-094f-c21c-a22a-5e1c400d4672"
 			],
 			"owner": 0
 		},
@@ -138,23 +152,21 @@
 		{
 			"id": "2c102207-0453-f69f-c81d-ac90d9a8b37c",
 			"headers": "",
-			"url": "http://localhost:8080/eppione/api/documents/user/2",
-			"pathVariables": {},
+			"url": "http://localhost:8080/eppione/api/documents/user/1",
 			"preRequestScript": null,
+			"pathVariables": {},
 			"method": "GET",
-			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"data": null,
 			"dataMode": "params",
-			"name": "Get documents for user",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1481219445762,
 			"version": 2,
-			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"folder": "f37864d4-4000-08c4-bf94-d967029bea3a"
+			"time": 1484771375570,
+			"name": "Get documents for user",
+			"description": "",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"responses": []
 		},
 		{
 			"id": "41b5b0c0-6748-1645-1141-796aba566309",
@@ -199,6 +211,49 @@
 			"folder": "222e6e28-e703-eed2-6f13-352aba223540"
 		},
 		{
+			"id": "5ed0a980-094f-c21c-a22a-5e1c400d4672",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/flow/blocked/user/3",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get finished flows",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1484778897629,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "13294fe2-5b70-33ae-594f-06eabb2ccac8"
+		},
+		{
+			"id": "6296c41f-5c76-08d7-6405-9c35f9a6a4a7",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://localhost:8080/eppione/api/flow",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"data": [],
+			"dataMode": "raw",
+			"name": "Create flow",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1484770801820,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "13294fe2-5b70-33ae-594f-06eabb2ccac8",
+			"rawModeData": "{\n\t\"name\":\"flow 1\",\n\t\"reviewTime\": 30,\n\t\"creatorId\": 3,\n\t\"fundingTypeId\":1,\n\t\"documentsIds\":[1,2,3]\n}"
+		},
+		{
 			"id": "8643c581-1c34-8bb0-e016-134fb69cb31e",
 			"headers": "",
 			"url": "http://localhost:8080/eppione/api/documents",
@@ -208,7 +263,7 @@
 			"data": [
 				{
 					"key": "file",
-					"value": "Tulips.jpg",
+					"value": "Informatica engleza an 3.doc",
 					"type": "file",
 					"enabled": true,
 					"warning": ""
@@ -238,11 +293,78 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1484176138425,
+			"time": 1484771139844,
 			"name": "Upload Document",
 			"description": "",
 			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"responses": []
+		},
+		{
+			"id": "901f85af-7e42-b977-914c-0345892bc90d",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/flow/genericPerson/9",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get flows for review",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1484772624567,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "13294fe2-5b70-33ae-594f-06eabb2ccac8"
+		},
+		{
+			"id": "98502c0c-2802-5495-57b2-3fbbc2bd7faf",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/documents/2",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"data": [
+				{
+					"key": "file",
+					"value": "Informatica engleza an 3.doc",
+					"type": "file",
+					"enabled": true
+				},
+				{
+					"key": "abstractInput",
+					"value": "frae",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "keywords",
+					"value": "fea",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "authorId",
+					"value": "2",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "Update Document",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1484763324430,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "f37864d4-4000-08c4-bf94-d967029bea3a"
 		},
 		{
 			"id": "9d6ba28a-d832-420b-aadb-1d32d930cb9b",
@@ -316,6 +438,27 @@
 			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"responses": [],
 			"folder": "222e6e28-e703-eed2-6f13-352aba223540"
+		},
+		{
+			"id": "d2282f8b-9d6e-b4ce-1c58-b342878abcab",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/flow/funding",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get all fundings",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1484771135459,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "13294fe2-5b70-33ae-594f-06eabb2ccac8"
 		},
 		{
 			"id": "d38b8075-afe1-4e63-87f8-8fed08e4ff99",
@@ -396,6 +539,27 @@
 			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"responses": [],
 			"folder": "e8a688b9-0ea7-7de6-b4a2-85a5e5e022f5"
+		},
+		{
+			"id": "de9084b0-8e5c-2d3b-a953-1b651e97b059",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/flow/user/3",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get user's flows",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1484772667788,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "13294fe2-5b70-33ae-594f-06eabb2ccac8"
 		},
 		{
 			"id": "e19689ff-d667-fb7e-5e65-0b24b4967821",
