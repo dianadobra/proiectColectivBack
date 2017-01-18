@@ -47,10 +47,10 @@ public class DocumentResource {
 		return new ResponseEntity<>(document, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{docId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/{docId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> update(@PathVariable("docId") long docId,
 			@RequestParam(name = "file", required = false) final MultipartFile file,
-			@Valid @ModelAttribute DocumentDTO documentDTO, BindingResult result) {
+			@ModelAttribute @Valid DocumentDTO documentDTO, BindingResult result) {
 		if (result.hasErrors()) {
 			return new ResponseEntity<>(
 					ErrorInfoFactory.buildBadRequestErrorInfo("Document fields are incorrect", "document", result),
@@ -60,6 +60,7 @@ public class DocumentResource {
 		DocumentDTO document = documentService.updateDocument(docId, documentDTO, file);
 		return new ResponseEntity<>(document, HttpStatus.OK);
 	}
+	
 
 	@RequestMapping(value = "/{docId}", method = RequestMethod.DELETE)
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)

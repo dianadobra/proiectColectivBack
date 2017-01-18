@@ -48,7 +48,7 @@ public class DocumentService {
 		doc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
 		doc.setCreationDate(new Date());
 		doc.setUpdateDate(new Date());
-		if (documentDTO.isSigned()) {
+		if (documentDTO.getSigned()) {
 			doc.setSignedBy(userService.getUser(documentDTO.getAuthorId()));
 		}
 		if (document != null) {
@@ -112,21 +112,26 @@ public class DocumentService {
 		Random random = new Random();
 
 		Document doc = documentRepository.findOne(docId);
-		Document newDoc = documentConverter.toEntity(documentDTO, doc);
+		Document newDoc = new Document();
+		newDoc.setAbstractInput(documentDTO.getAbstractInput()==null ? doc.getAbstractInput() : documentDTO.getAbstractInput());
+		newDoc.setKeywords(documentDTO.getKeywords() == null ? doc.getKeywords() : documentDTO.getKeywords());
 		newDoc.setGuid(doc.getGuid());
 		newDoc.setApprovalStatus(ApprovalStatus.Unapproved);
-		newDoc.setDocumentState(DocumentStatus.Draft);
 		newDoc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
-		newDoc.setUpdateDate(new Date());
-		if (newDoc.getVersion() < 1) {
+		if (newDoc.getAuthor().getId()!=doc.getAuthor().getId()){
+			newDoc.setDocumentState(DocumentStatus.FinalUpdated);
 			newDoc.setVersion(doc.getVersion() + 0.1f);
-		} else {
-			newDoc.setVersion(doc.getVersion() + 1f);
+		}else{
+			newDoc.setDocumentState(DocumentStatus.Draft);
+			if (newDoc.getVersion() < 1) {
+				newDoc.setVersion(doc.getVersion() + 0.1f);
+			} else {
+				newDoc.setVersion(doc.getVersion() + 1f);
+			}
 		}
+		newDoc.setUpdateDate(new Date());
+		newDoc.setSigned(false);
 
-		if (documentDTO.isSigned()) {
-			newDoc.setSignedBy(userService.getUser(documentDTO.getAuthorId()));
-		}
 
 		if (document != null) {
 			newDoc.setName(document.getOriginalFilename());

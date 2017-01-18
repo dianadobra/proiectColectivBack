@@ -14,7 +14,7 @@ public class DocumentConverter {
 	public Document toEntity(DocumentDTO documentDTO, Document document) {
 		document.setAbstractInput(documentDTO.getAbstractInput());
 		document.setKeywords(documentDTO.getKeywords());
-		document.setSigned(documentDTO.isSigned());
+		document.setSigned(documentDTO.getSigned());
 
 		return document;
 	}

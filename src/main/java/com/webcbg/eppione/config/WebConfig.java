@@ -4,6 +4,9 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 import java.util.List;
 
+import javax.servlet.MultipartConfigElement;
+
+import org.springframework.boot.context.embedded.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
@@ -40,6 +43,14 @@ public class WebConfig {
         };
     }
 
+    @Bean
+    public MultipartConfigElement multipartConfigElement(){
+        MultipartConfigFactory multipartConfigFactory = new MultipartConfigFactory();
+        multipartConfigFactory.setMaxFileSize("10MB");
+        multipartConfigFactory.setMaxRequestSize("50MB");
+        return multipartConfigFactory.createMultipartConfig();
+    }
+    
     @Bean
     public Jackson2ObjectMapperBuilder configureObjectMapper() {
         return new Jackson2ObjectMapperBuilder()

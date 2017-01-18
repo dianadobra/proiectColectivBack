@@ -6,15 +6,19 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.webcbg.eppione.companysettings.model.Document.ApprovalStatus;
 import com.webcbg.eppione.companysettings.model.Document.DocumentStatus;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DocumentDTO {
 
 	private Long id;
 	private String abstractInput;
 	private String keywords;
-	private boolean signed;
+	private Boolean signed;
 	private String name;
 	private DocumentStatus documentState;
 	private float version;
