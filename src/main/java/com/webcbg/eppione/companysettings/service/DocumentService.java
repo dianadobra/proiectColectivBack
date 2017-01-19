@@ -15,9 +15,11 @@ import com.webcbg.eppione.companysettings.convertor.DocumentConverter;
 import com.webcbg.eppione.companysettings.model.Document;
 import com.webcbg.eppione.companysettings.model.Document.ApprovalStatus;
 import com.webcbg.eppione.companysettings.model.Document.DocumentStatus;
+import com.webcbg.eppione.companysettings.model.Log.LogAction;
 import com.webcbg.eppione.companysettings.model.User;
 import com.webcbg.eppione.companysettings.repository.DocumentRepository;
 import com.webcbg.eppione.companysettings.rest.dto.DocumentDTO;
+import com.webcbg.eppione.companysettings.rest.dto.LogDTO;
 import com.webcbg.eppione.companysettings.service.errors.InvalidDataException;
 import com.webcbg.eppione.companysettings.service.errors.ResourceNotFoundException;
 
@@ -37,6 +39,9 @@ public class DocumentService {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private LogService logService;
+
 	public DocumentDTO addDocument(DocumentDTO documentDTO, final MultipartFile document) {
 
 		Random random = new Random();
@@ -52,13 +57,13 @@ public class DocumentService {
 			doc.setSignedBy(userService.getUser(documentDTO.getAuthorId()));
 		}
 		if (document != null) {
-			List<Document> previousDocuments = this.documentRepository.findAllByName(document.getOriginalFilename());
-			
+			List<Document> previousDocuments = documentRepository.findAllByName(document.getOriginalFilename());
+
 			doc.setName(document.getOriginalFilename());
-			if (previousDocuments.size()>0){
-				doc.setVersion(previousDocuments.get(previousDocuments.size()-1).getVersion()+0.1f);
+			if (previousDocuments.size() > 0) {
+				doc.setVersion(previousDocuments.get(previousDocuments.size() - 1).getVersion() + 0.1f);
 				doc.setGuid(previousDocuments.get(0).getGuid());
-			}else{
+			} else {
 				doc.setVersion(0.1f);
 				doc.setGuid(random.nextInt(999 - 100) + 100);
 			}
@@ -71,11 +76,22 @@ public class DocumentService {
 			} catch (IOException e) {
 				throw new InvalidDataException("Error uploading file!", "file.upload.fail");
 			}
-		}else{
+		} else {
 			doc.setVersion(0.1f);
 			doc.setGuid(random.nextInt(999 - 100) + 100);
 		}
 		doc = documentRepository.save(doc);
+
+		// create log for creating new document
+		LogDTO logDTO = new LogDTO();
+		logDTO.setAction(LogAction.Create);
+		Date dateObj = new Date();
+		logDTO.setDate(dateObj);
+		logDTO.setDescription("Document " + doc.getName() + " created. ");
+		logDTO.setEntityId(doc.getId());
+		logDTO.setUser(userService.getUser(documentDTO.getAuthorId()));
+
+		logService.createLog(logDTO);
 
 		return documentConverter.toDTO(doc);
 	}
@@ -169,33 +185,33 @@ public class DocumentService {
 		}
 		documentRepository.delete(doc);
 	}
-	
-	public void changeStatus(String status, Long docId){
+
+	public void changeStatus(String status, Long docId) {
 		Document doc = documentRepository.findOne(docId);
 		if (doc == null) {
 			throw new ResourceNotFoundException("Document not found!");
 		}
 		doc.setDocumentState(DocumentStatus.valueOf(status));
-		if (DocumentStatus.valueOf(status).equals(DocumentStatus.Draft)){
-			doc.setVersion(doc.getVersion()/10);
-		}else if (DocumentStatus.valueOf(status).equals(DocumentStatus.Final)){
-			doc.setVersion(doc.getVersion()*10);
+		if (DocumentStatus.valueOf(status).equals(DocumentStatus.Draft)) {
+			doc.setVersion(doc.getVersion() / 10);
+		} else if (DocumentStatus.valueOf(status).equals(DocumentStatus.Final)) {
+			doc.setVersion(doc.getVersion() * 10);
 		}
-		
-		this.documentRepository.save(doc);
+
+		documentRepository.save(doc);
 	}
-	
-	public void sign(Long docId, Long userId){
+
+	public void sign(Long docId, Long userId) {
 		Document doc = documentRepository.findOne(docId);
 		if (doc == null) {
 			throw new ResourceNotFoundException("Document not found!");
 		}
-		User user = this.userService.getUser(userId);
+		User user = userService.getUser(userId);
 		if (user == null) {
 			throw new ResourceNotFoundException("User not found!");
 		}
 		doc.setSigned(true);
 		doc.setSignedBy(user);
-		this.documentRepository.save(doc);
+		documentRepository.save(doc);
 	}
 }
