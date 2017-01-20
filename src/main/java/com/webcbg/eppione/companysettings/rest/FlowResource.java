@@ -64,6 +64,12 @@ public class FlowResource {
 		return new ResponseEntity<>(flows, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "blocked", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<FlowDTO>> getAllFinishedFlows() {
+		final List<FlowDTO> flows = this.flowService.getAllFinishedFlows();
+		return new ResponseEntity<>(flows, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/{flowId}/user/{userId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> changeStatus(
 			@PathVariable final long userId, 

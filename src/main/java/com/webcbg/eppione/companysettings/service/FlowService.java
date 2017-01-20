@@ -161,6 +161,10 @@ public class FlowService {
 		return this.flowConveter.toDtoList(this.flowRepository.findAllByCreator_IdAndIsActive(userId, false));
 	}
 	
+	public List<FlowDTO> getAllFinishedFlows(){
+		return this.flowConveter.toDtoList(this.flowRepository.findAllByIsActive(false));
+	}
+	
 	public FlowDTO changeStatus(Long flowId, Long userId, ApprovalStatus status, String comment){
 		
 		if(status.equals(ApprovalStatus.Approved)){

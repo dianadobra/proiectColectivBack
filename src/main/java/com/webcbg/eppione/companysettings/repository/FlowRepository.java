@@ -11,5 +11,7 @@ public interface FlowRepository extends JpaRepository<Flow, Long>{
 	public List<Flow> findAllByCreator_Id(Long userId);
 	
 	public List<Flow> findAllByCreator_IdAndIsActive(Long userId, boolean isActive);
+	
+	public List<Flow> findAllByIsActive(boolean isActive);
 
 }
