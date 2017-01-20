@@ -1,7 +1,5 @@
 package com.webcbg.eppione.companysettings.rest.dto;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 
 import com.webcbg.eppione.companysettings.model.Log.LogAction;
@@ -12,7 +10,7 @@ import lombok.Data;
 @Data
 public class LogDTO {
 	@NotNull
-	private Date date;
+	private String date;
 	@NotNull
 	private LogAction action;
 	private Long entityId;

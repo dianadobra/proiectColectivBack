@@ -1,5 +1,8 @@
 package com.webcbg.eppione.companysettings.convertor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +16,10 @@ public class LogConverter {
 
 	public LogDTO toDTO(final Log log) {
 		final LogDTO logDTO = new LogDTO();
-		logDTO.setDate(log.getDate());
+		Date date = log.getDate();
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		String finalDate = df.format(date);
+		logDTO.setDate(finalDate);
 		logDTO.setAction(log.getAction());
 		logDTO.setDescription(log.getDescription());
 		logDTO.setEntityId(log.getEntityId());
