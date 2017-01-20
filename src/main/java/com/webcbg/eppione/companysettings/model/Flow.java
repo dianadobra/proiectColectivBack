@@ -33,7 +33,7 @@ public class Flow {
 	private Date creationTime;
 	private ApprovalStatus approvalStatus;
 	
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="comments", joinColumns=@JoinColumn(name="user_id"))
 	@Column(name="comment")
 	private List<String> comments;
