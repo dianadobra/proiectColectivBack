@@ -21,6 +21,7 @@ public class Log {
 	private Date date;
 	private LogAction action;
 	private Long entityId;
+	private LogEntity entityType;
 	private String description;
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -28,7 +29,7 @@ public class Log {
 	private User user;
 
 	public enum LogAction {
-		Create, Update, Delete, PreoareForDelete, Upload, ChangeStatus
+		Create, Update, Delete, PrepoareForDelete, Upload, ChangeStatus
 	}
 
 	public enum LogEntity {

@@ -16,6 +16,7 @@ public class LogConverter {
 		log.setAction(logDTO.getAction());
 		log.setDescription(logDTO.getDescription());
 		log.setEntityId(logDTO.getEntityId());
+		log.setEntityType(logDTO.getEntityType());
 		log.setUser(logDTO.getUser());
 		return log;
 	}
@@ -26,6 +27,7 @@ public class LogConverter {
 		logDTO.setAction(log.getAction());
 		logDTO.setDescription(log.getDescription());
 		logDTO.setEntityId(log.getEntityId());
+		logDTO.setEntityType(log.getEntityType());
 		logDTO.setUser(log.getUser());
 		return logDTO;
 	}

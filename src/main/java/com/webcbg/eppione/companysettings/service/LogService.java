@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.webcbg.eppione.companysettings.convertor.LogConverter;
 import com.webcbg.eppione.companysettings.model.Log;
+import com.webcbg.eppione.companysettings.model.Log.LogAction;
+import com.webcbg.eppione.companysettings.model.Log.LogEntity;
 import com.webcbg.eppione.companysettings.repository.LogRepository;
 import com.webcbg.eppione.companysettings.rest.dto.LogDTO;
 
@@ -26,5 +28,17 @@ public class LogService {
 
 	public List<LogDTO> getAll() {
 		return logConverter.toDTOList(logRepository.findAll());
+	}
+
+	public List<LogDTO> getAllByUserId(long userId) {
+		return logConverter.toDTOList(logRepository.findAllByUser_Id(userId));
+	}
+
+	public List<LogDTO> getAllByLogEntity(LogEntity logEntity) {
+		return logConverter.toDTOList(logRepository.findAllByEntityType(logEntity));
+	}
+
+	public List<LogDTO> getAllByLogEntityAndActionType(LogEntity logEntity, LogAction actionType) {
+		return logConverter.toDTOList(logRepository.findAllByEntityTypeAndAction(logEntity, actionType));
 	}
 }

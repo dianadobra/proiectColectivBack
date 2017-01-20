@@ -15,6 +15,7 @@ import com.webcbg.eppione.companysettings.convertor.DocumentConverter;
 import com.webcbg.eppione.companysettings.model.Document;
 import com.webcbg.eppione.companysettings.model.Document.DocumentStatus;
 import com.webcbg.eppione.companysettings.model.Log.LogAction;
+import com.webcbg.eppione.companysettings.model.Log.LogEntity;
 import com.webcbg.eppione.companysettings.model.User;
 import com.webcbg.eppione.companysettings.repository.DocumentRepository;
 import com.webcbg.eppione.companysettings.rest.dto.DocumentDTO;
@@ -87,6 +88,7 @@ public class DocumentService {
 		logDTO.setDate(dateObj);
 		logDTO.setDescription("Document " + doc.getName() + " created. ");
 		logDTO.setEntityId(doc.getId());
+		logDTO.setEntityType(LogEntity.Document);
 		logDTO.setUser(userService.getUser(documentDTO.getAuthorId()));
 
 		logService.createLog(logDTO);
@@ -127,14 +129,15 @@ public class DocumentService {
 
 		Document doc = documentRepository.findOne(docId);
 		Document newDoc = new Document();
-		newDoc.setAbstractInput(documentDTO.getAbstractInput()==null ? doc.getAbstractInput() : documentDTO.getAbstractInput());
+		newDoc.setAbstractInput(
+				documentDTO.getAbstractInput() == null ? doc.getAbstractInput() : documentDTO.getAbstractInput());
 		newDoc.setKeywords(documentDTO.getKeywords() == null ? doc.getKeywords() : documentDTO.getKeywords());
 		newDoc.setGuid(doc.getGuid());
 		newDoc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
-		if (newDoc.getAuthor().getId()!=doc.getAuthor().getId()){
+		if (newDoc.getAuthor().getId() != doc.getAuthor().getId()) {
 			newDoc.setDocumentState(DocumentStatus.FinalUpdated);
 			newDoc.setVersion(doc.getVersion() + 0.1f);
-		}else{
+		} else {
 			newDoc.setDocumentState(DocumentStatus.Draft);
 			if (newDoc.getVersion() < 1) {
 				newDoc.setVersion(doc.getVersion() + 0.1f);
@@ -144,7 +147,6 @@ public class DocumentService {
 		}
 		newDoc.setUpdateDate(new Date());
 		newDoc.setSigned(false);
-
 
 		if (document != null) {
 			newDoc.setName(document.getOriginalFilename());
@@ -160,6 +162,18 @@ public class DocumentService {
 		doc.setDocumentState(DocumentStatus.Draft);
 		documentRepository.save(doc);
 		newDoc = documentRepository.save(newDoc);
+
+		// create log for update document
+		LogDTO logDTO = new LogDTO();
+		logDTO.setAction(LogAction.Update);
+		Date dateObj = new Date();
+		logDTO.setDate(dateObj);
+		logDTO.setDescription("Document " + doc.getName() + " was updated. ");
+		logDTO.setEntityId(doc.getId());
+		logDTO.setEntityType(LogEntity.Document);
+		logDTO.setUser(userService.getUser(documentDTO.getAuthorId()));
+
+		logService.createLog(logDTO);
 
 		return documentConverter.toDTO(newDoc);
 	}
@@ -180,6 +194,19 @@ public class DocumentService {
 		if (doc == null) {
 			throw new ResourceNotFoundException("Document not found!");
 		}
+
+		// create log for deleting document
+		LogDTO logDTO = new LogDTO();
+		logDTO.setAction(LogAction.Delete);
+		Date dateObj = new Date();
+		logDTO.setDate(dateObj);
+		logDTO.setDescription("Document " + doc.getName() + " was deleted. ");
+		logDTO.setEntityId(doc.getId());
+		logDTO.setEntityType(LogEntity.Document);
+		logDTO.setUser(doc.getAuthor());
+
+		logService.createLog(logDTO);
+
 		documentRepository.delete(doc);
 	}
 
@@ -194,6 +221,18 @@ public class DocumentService {
 		} else if (DocumentStatus.valueOf(status).equals(DocumentStatus.Final)) {
 			doc.setVersion(doc.getVersion() * 10);
 		}
+
+		// create log for changed status
+		LogDTO logDTO = new LogDTO();
+		logDTO.setAction(LogAction.ChangeStatus);
+		Date dateObj = new Date();
+		logDTO.setDate(dateObj);
+		logDTO.setDescription("Status for document " + doc.getName() + " was changed to: " + status + ".");
+		logDTO.setEntityId(doc.getId());
+		logDTO.setEntityType(LogEntity.Document);
+		logDTO.setUser(doc.getAuthor());
+
+		logService.createLog(logDTO);
 
 		documentRepository.save(doc);
 	}
