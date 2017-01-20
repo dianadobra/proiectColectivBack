@@ -17,4 +17,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	List<Document> findAllByDocumentState(DocumentStatus docState);
 
+	List<Document> findAllByDocumentStateAndPreparedForDelete(DocumentStatus docState, boolean prepared);
+
 }

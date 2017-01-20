@@ -43,7 +43,7 @@ public class DocumentService {
 
 	@Autowired
 	private LogService logService;
-	
+
 	@Autowired
 	private FlowRepository flowRepository;
 
@@ -107,10 +107,6 @@ public class DocumentService {
 
 	public List<DocumentDTO> getAllDocuments(Long userId) {
 		return documentConverter.toDtoList(documentRepository.findAllByAuthorIdOrderByGuidAsc(userId));
-	}
-
-	public List<DocumentDTO> getAllByDocumentStatus(DocumentStatus docState) {
-		return documentConverter.toDtoList(documentRepository.findAllByDocumentState(docState));
 	}
 
 	public byte[] downloadDocument(final long docId) {
@@ -203,16 +199,16 @@ public class DocumentService {
 		if (doc == null) {
 			throw new ResourceNotFoundException("Document not found!");
 		}
-		
-		//remove foreign key from flow_document
-		List<Flow> flows = this.flowRepository.findAll();
+
+		// remove foreign key from flow_document
+		List<Flow> flows = flowRepository.findAll();
 		for (Flow flow : flows) {
-			if(flow.getDocuments().contains(doc)){
+			if (flow.getDocuments().contains(doc)) {
 				flow.getDocuments().remove(doc);
 				flowRepository.save(flow);
 			}
 		}
-		
+
 		// create log for deleting document
 		Log log = new Log();
 		log.setAction(LogAction.Delete);
