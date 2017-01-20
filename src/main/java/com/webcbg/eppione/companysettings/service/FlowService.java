@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.webcbg.eppione.companysettings.convertor.FlowConverter;
 import com.webcbg.eppione.companysettings.model.Flow;
+import com.webcbg.eppione.companysettings.model.Flow.ApprovalStatus;
 import com.webcbg.eppione.companysettings.model.Funding;
 import com.webcbg.eppione.companysettings.model.GenericPerson;
 import com.webcbg.eppione.companysettings.model.User;
@@ -72,6 +73,8 @@ public class FlowService {
 		flow.setFunding(funding);
 		
 		flow.setActive(true);
+		flow.setApprovalStatus(ApprovalStatus.Unapproved);
+		flow.setComments(new ArrayList<String>());
 		
 		User superior = null;
 		
@@ -149,5 +152,60 @@ public class FlowService {
 	
 	public List<FlowDTO> getFinishedFlows(Long userId){
 		return this.flowConveter.toDtoList(this.flowRepository.findAllByCreator_IdAndIsActive(userId, false));
+	}
+	
+	public FlowDTO changeStatus(Long flowId, Long userId, ApprovalStatus status, String comment){
+		
+		if(status.equals(ApprovalStatus.Approved)){
+			Flow flow = this.flowRepository.findOne(flowId);
+			User user = this.userRepository.findOne(userId);
+			
+			user.getAwaitingFlows().remove(flow);
+			flow.setApprovalStatus(ApprovalStatus.Approved);
+			flow.getGenericPersons().remove(0);
+			
+			if (flow.getGenericPersons().isEmpty()){
+				flow.setActive(false);
+			}else{
+				User superior = this.userRepository.findOne(flow.getGenericPersons().get(0).getId());
+			}
+			
+			flow.getComments().add(comment);
+			
+			this.flowRepository.save(flow);
+			this.userRepository.save(user);
+			return this.flowConveter.toDto(flow);
+		}else if (status.equals(ApprovalStatus.Unapproved)){
+			Flow flow = this.flowRepository.findOne(flowId);
+			User user = this.userRepository.findOne(userId);
+			
+			user.getAwaitingFlows().remove(flow);
+			flow.setApprovalStatus(ApprovalStatus.Unapproved);
+			flow.getGenericPersons().removeAll(flow.getGenericPersons());
+			flow.setActive(false);
+			flow.getComments().add(comment);
+						
+			this.flowRepository.save(flow);
+			this.userRepository.save(user);
+			return this.flowConveter.toDto(flow);
+		}else{
+			Flow flow = this.flowRepository.findOne(flowId);
+			User user = this.userRepository.findOne(userId);
+			
+			user.getAwaitingFlows().remove(flow);
+			flow.setApprovalStatus(ApprovalStatus.Unapproved);
+			flow.getGenericPersons().removeAll(flow.getGenericPersons());
+			flow.setActive(false);
+			flow.getComments().add(comment);
+						
+			this.flowRepository.save(flow);
+			this.userRepository.save(user);
+			return this.flowConveter.toDto(flow);
+		}
+		
+		
+		
+		
+		
 	}
 }

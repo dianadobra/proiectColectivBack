@@ -20,6 +20,7 @@ public class FlowConverter {
 	public Flow toEntity(FlowDTO flowDTO, Flow flow) {
 		flow.setName(flowDTO.getName());
 		flow.setReviewTime(flowDTO.getReviewTime());
+		flow.setApprovalStatus(flowDTO.getStatus()==null ? flow.getApprovalStatus() : flowDTO.getStatus());
 		return flow;
 	}
 	
@@ -34,6 +35,8 @@ public class FlowConverter {
 		}
 		flowDTO.setFundingType(flow.getFunding().getType());
 		flowDTO.setName(flow.getName());
+		flowDTO.setStatus(flow.getApprovalStatus());
+		flowDTO.setComments(flow.getComments());
 		
 		return flowDTO;
 	}

@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.webcbg.eppione.companysettings.convertor.DocumentConverter;
 import com.webcbg.eppione.companysettings.model.Document;
-import com.webcbg.eppione.companysettings.model.Document.ApprovalStatus;
 import com.webcbg.eppione.companysettings.model.Document.DocumentStatus;
 import com.webcbg.eppione.companysettings.model.Log.LogAction;
 import com.webcbg.eppione.companysettings.model.User;
@@ -48,12 +47,11 @@ public class DocumentService {
 
 		Document doc = new Document();
 		doc = documentConverter.toEntity(documentDTO, doc);
-		doc.setApprovalStatus(ApprovalStatus.Unapproved);
 		doc.setDocumentState(DocumentStatus.Draft);
 		doc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
 		doc.setCreationDate(new Date());
 		doc.setUpdateDate(new Date());
-		if (documentDTO.getSigned()) {
+		if (documentDTO.getSigned()!=null) {
 			doc.setSignedBy(userService.getUser(documentDTO.getAuthorId()));
 		}
 		if (document != null) {
@@ -132,7 +130,6 @@ public class DocumentService {
 		newDoc.setAbstractInput(documentDTO.getAbstractInput()==null ? doc.getAbstractInput() : documentDTO.getAbstractInput());
 		newDoc.setKeywords(documentDTO.getKeywords() == null ? doc.getKeywords() : documentDTO.getKeywords());
 		newDoc.setGuid(doc.getGuid());
-		newDoc.setApprovalStatus(ApprovalStatus.Unapproved);
 		newDoc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
 		if (newDoc.getAuthor().getId()!=doc.getAuthor().getId()){
 			newDoc.setDocumentState(DocumentStatus.FinalUpdated);

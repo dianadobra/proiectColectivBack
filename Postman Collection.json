@@ -235,23 +235,21 @@
 			"id": "6296c41f-5c76-08d7-6405-9c35f9a6a4a7",
 			"headers": "Content-Type: application/json\n",
 			"url": "http://localhost:8080/eppione/api/flow",
-			"pathVariables": {},
 			"preRequestScript": null,
+			"pathVariables": {},
 			"method": "POST",
-			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"data": [],
 			"dataMode": "raw",
-			"name": "Create flow",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1484770801820,
 			"version": 2,
-			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"folder": "13294fe2-5b70-33ae-594f-06eabb2ccac8",
-			"rawModeData": "{\n\t\"name\":\"flow 1\",\n\t\"reviewTime\": 30,\n\t\"creatorId\": 3,\n\t\"fundingTypeId\":1,\n\t\"documentsIds\":[1,2,3]\n}"
+			"time": 1484931033093,
+			"name": "Create flow",
+			"description": "",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\":\"flow 1\",\n\t\"reviewTime\": 30,\n\t\"creatorId\": 3,\n\t\"fundingTypeId\":1,\n\t\"documentsIds\":[1,2]\n}"
 		},
 		{
 			"id": "8643c581-1c34-8bb0-e016-134fb69cb31e",
@@ -263,7 +261,7 @@
 			"data": [
 				{
 					"key": "file",
-					"value": "Informatica engleza an 3.doc",
+					"value": ".gitignore",
 					"type": "file",
 					"enabled": true,
 					"warning": ""
@@ -277,7 +275,7 @@
 				},
 				{
 					"key": "keywords",
-					"value": "feafe",
+					"value": "feafelkjiojoi",
 					"type": "text",
 					"enabled": true,
 					"warning": ""
@@ -293,7 +291,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1484771139844,
+			"time": 1484846007558,
 			"name": "Upload Document",
 			"description": "",
 			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",

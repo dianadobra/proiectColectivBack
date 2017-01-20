@@ -28,7 +28,6 @@ public class Document {
 	private String abstractInput;
 	private String keywords;
 	private boolean isSigned;
-	private ApprovalStatus approvalStatus;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
@@ -42,8 +41,6 @@ public class Document {
 		Draft, Final, FinalUpdated, Blocked
 	}
 
-	public enum ApprovalStatus {
-		Approved, Unapproved, NeedsRevision
-	}
+	
 
 }

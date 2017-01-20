@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webcbg.eppione.companysettings.model.Flow.ApprovalStatus;
 import com.webcbg.eppione.companysettings.model.Funding;
 import com.webcbg.eppione.companysettings.rest.dto.FlowDTO;
 import com.webcbg.eppione.companysettings.rest.util.ErrorInfoFactory;
@@ -60,5 +62,13 @@ public class FlowResource {
 	public ResponseEntity<List<FlowDTO>> getFinishedFlows(@PathVariable final Long userId) {
 		final List<FlowDTO> flows = this.flowService.getFinishedFlows(userId);
 		return new ResponseEntity<>(flows, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{id}/user/{userId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateUser(@PathVariable final long userId, @PathVariable final long flowId, @RequestParam(name="status") ApprovalStatus status, @RequestParam(name="comment") String comment) {
+		
+		final FlowDTO flow = flowService.changeStatus(flowId, userId, status, comment);
+		return new ResponseEntity<>(flow, HttpStatus.OK);
+
 	}
 }

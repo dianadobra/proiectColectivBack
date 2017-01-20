@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,6 +31,12 @@ public class Flow {
 	private Date deadline;
 	private int reviewTime;
 	private Date creationTime;
+	private ApprovalStatus approvalStatus;
+	
+	@ElementCollection
+	@CollectionTable(name="comments", joinColumns=@JoinColumn(name="user_id"))
+	@Column(name="comment")
+	private List<String> comments;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
@@ -45,5 +54,9 @@ public class Flow {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "flow", cascade=CascadeType.ALL)
 	private List<GenericPerson> genericPersons;
+	
+	public enum ApprovalStatus {
+		Approved, Unapproved, NeedsRevision
+	}
 
 }

@@ -3,7 +3,6 @@ package com.webcbg.eppione.companysettings.rest.dto;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.webcbg.eppione.companysettings.model.Document.ApprovalStatus;
 import com.webcbg.eppione.companysettings.model.Document.DocumentStatus;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +25,6 @@ public class DocumentDTO {
 	private Date creationDate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date updateDate;
-	private ApprovalStatus approvalStatus;
 	private String username;
 	private String signedByName;
 	private Long authorId;

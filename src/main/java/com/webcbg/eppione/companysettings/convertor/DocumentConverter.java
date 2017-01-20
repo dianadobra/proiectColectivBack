@@ -14,7 +14,9 @@ public class DocumentConverter {
 	public Document toEntity(DocumentDTO documentDTO, Document document) {
 		document.setAbstractInput(documentDTO.getAbstractInput());
 		document.setKeywords(documentDTO.getKeywords());
-		document.setSigned(documentDTO.getSigned());
+		if (documentDTO.getSigned()!=null){
+			document.setSigned(documentDTO.getSigned());
+		}
 
 		return document;
 	}
@@ -26,7 +28,6 @@ public class DocumentConverter {
 		documentDTO.setKeywords(document.getKeywords());
 		documentDTO.setSigned(document.isSigned());
 		documentDTO.setName(document.getName());
-		documentDTO.setApprovalStatus(document.getApprovalStatus());
 		documentDTO.setCreationDate(document.getCreationDate());
 		documentDTO.setUpdateDate(document.getUpdateDate());
 		documentDTO.setDocumentState(document.getDocumentState());
