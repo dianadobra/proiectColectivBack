@@ -14,12 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.webcbg.eppione.companysettings.convertor.DocumentConverter;
 import com.webcbg.eppione.companysettings.model.Document;
 import com.webcbg.eppione.companysettings.model.Document.DocumentStatus;
+import com.webcbg.eppione.companysettings.model.Log;
 import com.webcbg.eppione.companysettings.model.Log.LogAction;
 import com.webcbg.eppione.companysettings.model.Log.LogEntity;
 import com.webcbg.eppione.companysettings.model.User;
 import com.webcbg.eppione.companysettings.repository.DocumentRepository;
 import com.webcbg.eppione.companysettings.rest.dto.DocumentDTO;
-import com.webcbg.eppione.companysettings.rest.dto.LogDTO;
 import com.webcbg.eppione.companysettings.service.errors.InvalidDataException;
 import com.webcbg.eppione.companysettings.service.errors.ResourceNotFoundException;
 
@@ -52,7 +52,7 @@ public class DocumentService {
 		doc.setAuthor(userService.getUser(documentDTO.getAuthorId()));
 		doc.setCreationDate(new Date());
 		doc.setUpdateDate(new Date());
-		if (documentDTO.getSigned()!=null) {
+		if (documentDTO.getSigned() != null) {
 			doc.setSignedBy(userService.getUser(documentDTO.getAuthorId()));
 		}
 		if (document != null) {
@@ -82,16 +82,16 @@ public class DocumentService {
 		doc = documentRepository.save(doc);
 
 		// create log for creating new document
-		LogDTO logDTO = new LogDTO();
-		logDTO.setAction(LogAction.Create);
+		Log log = new Log();
+		log.setAction(LogAction.Create);
 		Date dateObj = new Date();
-		logDTO.setDate(dateObj);
-		logDTO.setDescription("Document " + doc.getName() + " created. ");
-		logDTO.setEntityId(doc.getId());
-		logDTO.setEntityType(LogEntity.Document);
-		logDTO.setUser(userService.getUser(documentDTO.getAuthorId()));
+		log.setDate(dateObj);
+		log.setDescription("Document " + doc.getName() + " created. ");
+		log.setEntityId(doc.getId());
+		log.setEntityType(LogEntity.Document);
+		log.setUser(doc.getAuthor());
 
-		logService.createLog(logDTO);
+		logService.createLog(log);
 
 		return documentConverter.toDTO(doc);
 	}
@@ -164,16 +164,16 @@ public class DocumentService {
 		newDoc = documentRepository.save(newDoc);
 
 		// create log for update document
-		LogDTO logDTO = new LogDTO();
-		logDTO.setAction(LogAction.Update);
+		Log log = new Log();
+		log.setAction(LogAction.Update);
 		Date dateObj = new Date();
-		logDTO.setDate(dateObj);
-		logDTO.setDescription("Document " + doc.getName() + " was updated. ");
-		logDTO.setEntityId(doc.getId());
-		logDTO.setEntityType(LogEntity.Document);
-		logDTO.setUser(userService.getUser(documentDTO.getAuthorId()));
+		log.setDate(dateObj);
+		log.setDescription("Document " + doc.getName() + " was updated. ");
+		log.setEntityId(doc.getId());
+		log.setEntityType(LogEntity.Document);
+		log.setUser(doc.getAuthor());
 
-		logService.createLog(logDTO);
+		logService.createLog(log);
 
 		return documentConverter.toDTO(newDoc);
 	}
@@ -196,16 +196,16 @@ public class DocumentService {
 		}
 
 		// create log for deleting document
-		LogDTO logDTO = new LogDTO();
-		logDTO.setAction(LogAction.Delete);
+		Log log = new Log();
+		log.setAction(LogAction.Delete);
 		Date dateObj = new Date();
-		logDTO.setDate(dateObj);
-		logDTO.setDescription("Document " + doc.getName() + " was deleted. ");
-		logDTO.setEntityId(doc.getId());
-		logDTO.setEntityType(LogEntity.Document);
-		logDTO.setUser(doc.getAuthor());
+		log.setDate(dateObj);
+		log.setDescription("Document " + doc.getName() + " was deleted. ");
+		log.setEntityId(doc.getId());
+		log.setEntityType(LogEntity.Document);
+		log.setUser(doc.getAuthor());
 
-		logService.createLog(logDTO);
+		logService.createLog(log);
 
 		documentRepository.delete(doc);
 	}
@@ -223,16 +223,16 @@ public class DocumentService {
 		}
 
 		// create log for changed status
-		LogDTO logDTO = new LogDTO();
-		logDTO.setAction(LogAction.ChangeStatus);
+		Log log = new Log();
+		log.setAction(LogAction.ChangeStatus);
 		Date dateObj = new Date();
-		logDTO.setDate(dateObj);
-		logDTO.setDescription("Status for document " + doc.getName() + " was changed to: " + status + ".");
-		logDTO.setEntityId(doc.getId());
-		logDTO.setEntityType(LogEntity.Document);
-		logDTO.setUser(doc.getAuthor());
+		log.setDate(dateObj);
+		log.setDescription("Status for document " + doc.getName() + " was changed to: " + status + ".");
+		log.setEntityId(doc.getId());
+		log.setEntityType(LogEntity.Document);
+		log.setUser(doc.getAuthor());
 
-		logService.createLog(logDTO);
+		logService.createLog(log);
 
 		documentRepository.save(doc);
 	}

@@ -20,9 +20,7 @@ public class LogService {
 	@Autowired
 	private LogConverter logConverter;
 
-	public LogDTO createLog(final LogDTO logDTO) {
-		Log log = new Log();
-		log = logConverter.toEntity(logDTO, log);
+	public LogDTO createLog(final Log log) {
 		return logConverter.toDTO(logRepository.save(log));
 	}
 
