@@ -37,6 +37,7 @@ public class FlowConverter {
 		flowDTO.setName(flow.getName());
 		flowDTO.setStatus(flow.getApprovalStatus());
 		flowDTO.setComments(flow.getComments());
+		flowDTO.setDeadline(flow.getDeadline());
 		
 		return flowDTO;
 	}

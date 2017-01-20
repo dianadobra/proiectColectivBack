@@ -76,9 +76,21 @@ public class FlowService {
 		flow.setApprovalStatus(ApprovalStatus.Unapproved);
 		flow.setComments(new ArrayList<String>());
 		
-		User superior = null;
+		List<GenericPerson> genericPersons = this.getGenericPersons(flow, funding, creator);
 		
+		
+		flow.setGenericPersons(new ArrayList<>());
+		flow.getGenericPersons().addAll(genericPersons);
+		
+		this.flowRepository.save(flow);
+
+		return this.flowConveter.toDto(flow);
+	}
+	
+	public List<GenericPerson> getGenericPersons(Flow flow, Funding funding, User creator){
 		List<GenericPerson> genericPersons = new ArrayList<>();
+		
+		User superior = null;
 		
 		if (funding.getType().equals("Fara finantare")){
 			GenericPerson genericPerson = new GenericPerson();
@@ -124,18 +136,14 @@ public class FlowService {
 		
 		}
 		
-		flow.setGenericPersons(new ArrayList<>());
-		flow.getGenericPersons().addAll(genericPersons);
-		
-		this.flowRepository.save(flow);
-		
 		if (superior.getAwaitingFlows()==null){
 			superior.setAwaitingFlows(new ArrayList<>());
 		}
 		superior.getAwaitingFlows().add(flow);
 		userRepository.save(superior);
-
-		return this.flowConveter.toDto(flow);
+		
+		return genericPersons;
+		
 	}
 	
 	public List<Funding> getAllFundings(){
@@ -161,16 +169,19 @@ public class FlowService {
 			User user = this.userRepository.findOne(userId);
 			
 			user.getAwaitingFlows().remove(flow);
-			flow.setApprovalStatus(ApprovalStatus.Approved);
+			flow.setApprovalStatus(ApprovalStatus.Approved);		
+			GenericPerson genericPerson = flow.getGenericPersons().get(0);
+			this.genericPersonRepository.delete(genericPerson);
 			flow.getGenericPersons().remove(0);
+			flow.getComments().add(comment);
 			
 			if (flow.getGenericPersons().isEmpty()){
 				flow.setActive(false);
 			}else{
 				User superior = this.userRepository.findOne(flow.getGenericPersons().get(0).getId());
+				superior.getAwaitingFlows().add(flow);
+				this.userRepository.save(superior);
 			}
-			
-			flow.getComments().add(comment);
 			
 			this.flowRepository.save(flow);
 			this.userRepository.save(user);
@@ -178,6 +189,9 @@ public class FlowService {
 		}else if (status.equals(ApprovalStatus.Unapproved)){
 			Flow flow = this.flowRepository.findOne(flowId);
 			User user = this.userRepository.findOne(userId);
+			
+			GenericPerson genericPerson = flow.getGenericPersons().get(0);
+			this.genericPersonRepository.delete(genericPerson);
 			
 			user.getAwaitingFlows().remove(flow);
 			flow.setApprovalStatus(ApprovalStatus.Unapproved);
@@ -190,14 +204,27 @@ public class FlowService {
 			return this.flowConveter.toDto(flow);
 		}else{
 			Flow flow = this.flowRepository.findOne(flowId);
-			User user = this.userRepository.findOne(userId);
-			
-			user.getAwaitingFlows().remove(flow);
-			flow.setApprovalStatus(ApprovalStatus.Unapproved);
-			flow.getGenericPersons().removeAll(flow.getGenericPersons());
-			flow.setActive(false);
-			flow.getComments().add(comment);
+			User user = this.userRepository.findOne(userId);		
+					
+			User creator = flow.getCreator();
+			creator.getAwaitingFlows().add(flow);
+			this.userRepository.save(creator);
 						
+			user.getAwaitingFlows().remove(flow);
+			flow.setApprovalStatus(ApprovalStatus.NeedsRevision);
+			flow.setActive(true);
+			flow.getComments().add(comment);	
+			flow.setGenericPersons(new ArrayList<>());
+			
+			GenericPerson genericPerson = new GenericPerson();
+			genericPerson.setFlow(flow);
+			genericPerson.setFunding(flow.getFunding());
+			genericPerson.setHasApproved(false);
+			genericPerson.setUser(creator);	
+			this.genericPersonRepository.save(genericPerson);
+			
+			flow.setGenericPersons(this.getGenericPersons(flow, flow.getFunding(), creator));
+
 			this.flowRepository.save(flow);
 			this.userRepository.save(user);
 			return this.flowConveter.toDto(flow);

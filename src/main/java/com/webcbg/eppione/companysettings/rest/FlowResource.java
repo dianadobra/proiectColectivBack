@@ -64,8 +64,12 @@ public class FlowResource {
 		return new ResponseEntity<>(flows, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{id}/user/{userId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateUser(@PathVariable final long userId, @PathVariable final long flowId, @RequestParam(name="status") ApprovalStatus status, @RequestParam(name="comment") String comment) {
+	@RequestMapping(value = "/{flowId}/user/{userId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> changeStatus(
+			@PathVariable final long userId, 
+			@PathVariable final long flowId, 
+			@RequestParam(name="status") ApprovalStatus status, 
+			@RequestParam(name="comment", required=false) String comment) {
 		
 		final FlowDTO flow = flowService.changeStatus(flowId, userId, status, comment);
 		return new ResponseEntity<>(flow, HttpStatus.OK);

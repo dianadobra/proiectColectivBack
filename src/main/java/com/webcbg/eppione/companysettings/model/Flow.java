@@ -39,7 +39,7 @@ public class Flow {
 	private List<String> comments;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "creator_id")
 	private User creator;
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -52,7 +52,7 @@ public class Flow {
 					@JoinColumn(name = "document_id", referencedColumnName = "id") })
 	private List<Document> documents;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "flow", cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "flow", cascade=CascadeType.ALL)
 	private List<GenericPerson> genericPersons;
 	
 	public enum ApprovalStatus {
