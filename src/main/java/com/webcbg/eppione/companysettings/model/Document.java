@@ -28,6 +28,7 @@ public class Document {
 	private String abstractInput;
 	private String keywords;
 	private boolean isSigned;
+	private boolean preparedForDelete;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "author_id")
@@ -40,7 +41,5 @@ public class Document {
 	public enum DocumentStatus {
 		Draft, Final, FinalUpdated, Blocked
 	}
-
-	
 
 }

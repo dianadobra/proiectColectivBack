@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 
 import com.webcbg.eppione.companysettings.model.Log.LogAction;
 import com.webcbg.eppione.companysettings.model.Log.LogEntity;
-import com.webcbg.eppione.companysettings.model.User;
 
 import lombok.Data;
 
@@ -20,5 +19,5 @@ public class LogDTO {
 	private LogEntity entityType;
 	private String description;
 	@NotNull
-	private User user;
+	private String userName;
 }

@@ -11,16 +11,6 @@ import com.webcbg.eppione.companysettings.rest.dto.LogDTO;
 @Component
 public class LogConverter {
 
-	public Log toEntity(final LogDTO logDTO, final Log log) {
-		log.setDate(logDTO.getDate());
-		log.setAction(logDTO.getAction());
-		log.setDescription(logDTO.getDescription());
-		log.setEntityId(logDTO.getEntityId());
-		log.setEntityType(logDTO.getEntityType());
-		log.setUser(logDTO.getUser());
-		return log;
-	}
-
 	public LogDTO toDTO(final Log log) {
 		final LogDTO logDTO = new LogDTO();
 		logDTO.setDate(log.getDate());
@@ -28,7 +18,8 @@ public class LogConverter {
 		logDTO.setDescription(log.getDescription());
 		logDTO.setEntityId(log.getEntityId());
 		logDTO.setEntityType(log.getEntityType());
-		logDTO.setUser(log.getUser());
+		String userName = log.getUser().getFirstName() + " " + log.getUser().getLastName();
+		logDTO.setUserName(userName);
 		return logDTO;
 	}
 
