@@ -29,7 +29,8 @@
 				"2c102207-0453-f69f-c81d-ac90d9a8b37c",
 				"41b5b0c0-6748-1645-1141-796aba566309",
 				"26186870-1067-9874-6728-c420c1879433",
-				"98502c0c-2802-5495-57b2-3fbbc2bd7faf"
+				"98502c0c-2802-5495-57b2-3fbbc2bd7faf",
+				"b674d341-10c5-99da-5d71-6988f190223a"
 			],
 			"owner": 0
 		},
@@ -42,7 +43,8 @@
 				"d2282f8b-9d6e-b4ce-1c58-b342878abcab",
 				"901f85af-7e42-b977-914c-0345892bc90d",
 				"de9084b0-8e5c-2d3b-a953-1b651e97b059",
-				"5ed0a980-094f-c21c-a22a-5e1c400d4672"
+				"5ed0a980-094f-c21c-a22a-5e1c400d4672",
+				"6e648233-94d4-4934-65b1-5b2869b34876"
 			],
 			"owner": 0
 		},
@@ -213,23 +215,21 @@
 		{
 			"id": "5ed0a980-094f-c21c-a22a-5e1c400d4672",
 			"headers": "",
-			"url": "http://localhost:8080/eppione/api/flow/blocked/user/3",
-			"pathVariables": {},
+			"url": "http://localhost:8080/eppione/api/flow/blocked",
 			"preRequestScript": null,
+			"pathVariables": {},
 			"method": "GET",
-			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"data": null,
 			"dataMode": "params",
-			"name": "Get finished flows",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1484778897629,
 			"version": 2,
-			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"folder": "13294fe2-5b70-33ae-594f-06eabb2ccac8"
+			"time": 1484954565830,
+			"name": "Get finished flows",
+			"description": "",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"responses": []
 		},
 		{
 			"id": "6296c41f-5c76-08d7-6405-9c35f9a6a4a7",
@@ -244,12 +244,30 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1484931033093,
+			"time": 1484955376989,
 			"name": "Create flow",
 			"description": "",
 			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"responses": [],
-			"rawModeData": "{\n\t\"name\":\"flow 1\",\n\t\"reviewTime\": 30,\n\t\"creatorId\": 3,\n\t\"fundingTypeId\":1,\n\t\"documentsIds\":[1,2]\n}"
+			"rawModeData": "{\n\t\"name\":\"flow 3\",\n\t\"reviewTime\": 30,\n\t\"creatorId\": 1,\n\t\"fundingTypeId\":1,\n\t\"documentsIds\":[1]\n}"
+		},
+		{
+			"id": "6e648233-94d4-4934-65b1-5b2869b34876",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/flow/6/user/9?status=NeedsRevision&comment=hhhhh",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "PUT",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1484955373701,
+			"name": "Update flow status",
+			"description": "",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"responses": []
 		},
 		{
 			"id": "8643c581-1c34-8bb0-e016-134fb69cb31e",
@@ -291,7 +309,7 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1484846007558,
+			"time": 1484935859752,
 			"name": "Upload Document",
 			"description": "",
 			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
@@ -395,6 +413,27 @@
 			"description": "",
 			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"responses": []
+		},
+		{
+			"id": "b674d341-10c5-99da-5d71-6988f190223a",
+			"headers": "",
+			"url": "http://localhost:8080/eppione/api/documents/2",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "DELETE",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"data": null,
+			"dataMode": "params",
+			"name": "DeleteDocument",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1484946640489,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "f37864d4-4000-08c4-bf94-d967029bea3a"
 		},
 		{
 			"id": "cb9ed447-86be-3ce7-baa5-ba57a413dbc5",
@@ -541,23 +580,21 @@
 		{
 			"id": "de9084b0-8e5c-2d3b-a953-1b651e97b059",
 			"headers": "",
-			"url": "http://localhost:8080/eppione/api/flow/user/3",
-			"pathVariables": {},
+			"url": "http://localhost:8080/eppione/api/flow/user/1",
 			"preRequestScript": null,
+			"pathVariables": {},
 			"method": "GET",
-			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
 			"data": null,
 			"dataMode": "params",
-			"name": "Get user's flows",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1484772667788,
 			"version": 2,
-			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"folder": "13294fe2-5b70-33ae-594f-06eabb2ccac8"
+			"time": 1484955117789,
+			"name": "Get user's flows",
+			"description": "",
+			"collectionId": "382e990a-3404-9abe-cca7-0aeba20fae6a",
+			"responses": []
 		},
 		{
 			"id": "e19689ff-d667-fb7e-5e65-0b24b4967821",
