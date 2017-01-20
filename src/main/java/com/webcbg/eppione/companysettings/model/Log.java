@@ -33,7 +33,7 @@ public class Log {
 	}
 
 	public enum LogEntity {
-		User, Document, Flow
+		Document, Flow
 	}
 
 }

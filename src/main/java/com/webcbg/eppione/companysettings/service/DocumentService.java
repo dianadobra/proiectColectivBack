@@ -109,6 +109,10 @@ public class DocumentService {
 		return documentConverter.toDtoList(documentRepository.findAllByAuthorIdOrderByGuidAsc(userId));
 	}
 
+	public List<DocumentDTO> getAllByDocumentStatus(DocumentStatus docState) {
+		return documentConverter.toDtoList(documentRepository.findAllByDocumentState(docState));
+	}
+
 	public byte[] downloadDocument(final long docId) {
 
 		final Document doc = documentRepository.findOne(docId);

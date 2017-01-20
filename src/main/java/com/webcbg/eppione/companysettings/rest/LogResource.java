@@ -46,12 +46,14 @@ public class LogResource {
 		return new ResponseEntity<>(logs, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/logEntityAndLogAction", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional(readOnly = true)
 	public ResponseEntity<List<LogDTO>> getLogsByEntityTypeAndLogAction(
-			@RequestParam(name = "logEntity", required = true) final LogEntity logEntity,
-			@RequestParam(name = "logAction", required = true) final LogAction logAction) {
-		final List<LogDTO> logs = logService.getAllByLogEntityAndActionType(logEntity, logAction);
+			@RequestParam(name = "logEntity", required = false) final LogEntity logEntity,
+			@RequestParam(name = "logAction", required = false) final LogAction logAction,
+			@RequestParam(name = "userId", required = false) final Long userId) {
+
+		final List<LogDTO> logs = logService.filterLogs(logEntity, logAction, userId);
 		return new ResponseEntity<>(logs, HttpStatus.OK);
 	}
 

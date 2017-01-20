@@ -39,4 +39,9 @@ public class LogService {
 	public List<LogDTO> getAllByLogEntityAndActionType(LogEntity logEntity, LogAction actionType) {
 		return logConverter.toDTOList(logRepository.findAllByEntityTypeAndAction(logEntity, actionType));
 	}
+
+	public List<LogDTO> filterLogs(LogEntity logEntity, LogAction actionType, Long userId) {
+		return logConverter
+				.toDTOList(logRepository.findAllByEntityTypeAndActionAndUser_Id(logEntity, actionType, userId));
+	}
 }
