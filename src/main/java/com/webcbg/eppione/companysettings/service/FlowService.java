@@ -77,8 +77,7 @@ public class FlowService {
 		flow.setComments(new ArrayList<String>());
 		
 		List<GenericPerson> genericPersons = this.getGenericPersons(flow, funding, creator);
-		
-		
+			
 		flow.setGenericPersons(new ArrayList<>());
 		flow.getGenericPersons().addAll(genericPersons);
 		
@@ -171,15 +170,17 @@ public class FlowService {
 			user.getAwaitingFlows().remove(flow);
 			flow.setApprovalStatus(ApprovalStatus.Approved);		
 			GenericPerson genericPerson = flow.getGenericPersons().get(0);
-			this.genericPersonRepository.delete(genericPerson);
 			flow.getGenericPersons().remove(0);
+			this.genericPersonRepository.delete(genericPerson);
 			flow.getComments().add(comment);
 			
 			if (flow.getGenericPersons().isEmpty()){
 				flow.setActive(false);
 			}else{
-				User superior = this.userRepository.findOne(flow.getGenericPersons().get(0).getId());
-				superior.getAwaitingFlows().add(flow);
+				GenericPerson next = flow.getGenericPersons().get(0);
+				User superior = this.userRepository.findOne(next.getId());
+				superior.getAwaitingFlows().add(flow); 
+				this.genericPersonRepository.save(next);
 				this.userRepository.save(superior);
 			}
 			

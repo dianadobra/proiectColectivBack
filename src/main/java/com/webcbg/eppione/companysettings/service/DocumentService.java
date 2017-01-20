@@ -14,11 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.webcbg.eppione.companysettings.convertor.DocumentConverter;
 import com.webcbg.eppione.companysettings.model.Document;
 import com.webcbg.eppione.companysettings.model.Document.DocumentStatus;
+import com.webcbg.eppione.companysettings.model.Flow;
 import com.webcbg.eppione.companysettings.model.Log;
 import com.webcbg.eppione.companysettings.model.Log.LogAction;
 import com.webcbg.eppione.companysettings.model.Log.LogEntity;
 import com.webcbg.eppione.companysettings.model.User;
 import com.webcbg.eppione.companysettings.repository.DocumentRepository;
+import com.webcbg.eppione.companysettings.repository.FlowRepository;
 import com.webcbg.eppione.companysettings.rest.dto.DocumentDTO;
 import com.webcbg.eppione.companysettings.service.errors.InvalidDataException;
 import com.webcbg.eppione.companysettings.service.errors.ResourceNotFoundException;
@@ -41,6 +43,9 @@ public class DocumentService {
 
 	@Autowired
 	private LogService logService;
+	
+	@Autowired
+	private FlowRepository flowRepository;
 
 	public DocumentDTO addDocument(DocumentDTO documentDTO, final MultipartFile document) {
 
@@ -194,7 +199,16 @@ public class DocumentService {
 		if (doc == null) {
 			throw new ResourceNotFoundException("Document not found!");
 		}
-
+		
+		//remove foreign key from flow_document
+		List<Flow> flows = this.flowRepository.findAll();
+		for (Flow flow : flows) {
+			if(flow.getDocuments().contains(doc)){
+				flow.getDocuments().remove(doc);
+				flowRepository.save(flow);
+			}
+		}
+		
 		// create log for deleting document
 		Log log = new Log();
 		log.setAction(LogAction.Delete);
