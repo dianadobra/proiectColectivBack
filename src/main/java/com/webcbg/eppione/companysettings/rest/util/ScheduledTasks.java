@@ -36,7 +36,6 @@ public class ScheduledTasks {
 			long end = now.getTime();
 			long start = updateDate.getTime();
 			long days = TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
-			System.out.println("days" + days);
 
 			if (days == 1) {
 				// send mail
@@ -69,7 +68,6 @@ public class ScheduledTasks {
 			long end = now.getTime();
 			long start = updateDate.getTime();
 			long days = TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
-			System.out.println("days" + days);
 
 			if (days == 2) {
 				// send mail

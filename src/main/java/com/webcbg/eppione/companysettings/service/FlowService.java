@@ -207,6 +207,18 @@ public class FlowService {
 
 			flowRepository.save(flow);
 			userRepository.save(user);
+
+			Log log = new Log();
+			log.setAction(LogAction.ChangeStatus);
+			Date dateObj = new Date();
+			log.setDate(dateObj);
+			log.setDescription("Flow " + flow.getName() + " status changed to: " + flow.getApprovalStatus());
+			log.setEntityId(flow.getId());
+			log.setEntityType(LogEntity.Flow);
+			log.setUser(flow.getCreator());
+
+			logService.createLog(log);
+
 			return flowConveter.toDto(flow);
 		} else if (status.equals(ApprovalStatus.Unapproved)) {
 			Flow flow = flowRepository.findOne(flowId);
@@ -223,6 +235,18 @@ public class FlowService {
 
 			flowRepository.save(flow);
 			userRepository.save(user);
+
+			Log log = new Log();
+			log.setAction(LogAction.ChangeStatus);
+			Date dateObj = new Date();
+			log.setDate(dateObj);
+			log.setDescription("Flow " + flow.getName() + " status changed to: " + flow.getApprovalStatus());
+			log.setEntityId(flow.getId());
+			log.setEntityType(LogEntity.Flow);
+			log.setUser(flow.getCreator());
+
+			logService.createLog(log);
+
 			return flowConveter.toDto(flow);
 		} else {
 			Flow flow = flowRepository.findOne(flowId);
