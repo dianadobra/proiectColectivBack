@@ -41,7 +41,16 @@ public class LogService {
 	}
 
 	public List<LogDTO> filterLogs(LogEntity logEntity, LogAction actionType, Long userId) {
-		return logConverter
-				.toDTOList(logRepository.findAllByEntityTypeAndActionAndUser_Id(logEntity, actionType, userId));
+		long entity = -1;
+		long action = -1;
+		if (logEntity != null && actionType != null) {
+			entity = logEntity.ordinal();
+			action = actionType.ordinal();
+		} else if (logEntity != null) {
+			entity = logEntity.ordinal();
+		} else if (actionType != null) {
+			action = actionType.ordinal();
+		}
+		return logConverter.toDTOList(logRepository.filterLogs(entity, action, userId));
 	}
 }

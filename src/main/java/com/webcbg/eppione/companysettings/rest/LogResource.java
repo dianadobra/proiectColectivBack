@@ -32,6 +32,7 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+
 	@Transactional(readOnly = true)
 	public ResponseEntity<List<LogDTO>> getLogsByUserId(@PathVariable final Long userId) {
 		final List<LogDTO> logs = logService.getAllByUserId(userId);

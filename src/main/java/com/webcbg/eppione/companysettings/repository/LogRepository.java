@@ -23,8 +23,8 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 
 	List<Log> findAllByEntityTypeAndActionAndUser_Id(LogEntity entityType, LogAction actionType, Long userId);
 
-	@Query("Select l from Log l where (l.entityType=:entity) AND (l.action=:action) AND (l.user.id=:userId)")
-	List<Log> filter(@Param("entity") LogEntity entityType, @Param("action") LogAction actionType,
+	@Query(value = "select l.* from log l where (?1 is null or ?1=-1 or l.entity_type = ?1) and (?2 is null or ?2=-1 or l.action = ?2) and (?3 is null or ?3=-1 or l.user_id = ?3)", nativeQuery = true)
+	List<Log> filterLogs(@Param("entity") Long entityType, @Param("action") Long actionType,
 			@Param("userId") Long userId);
 
 }
