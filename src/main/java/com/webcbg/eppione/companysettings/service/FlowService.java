@@ -86,7 +86,7 @@ public class FlowService {
 		flow.setGenericPersons(new ArrayList<>());
 		flow.getGenericPersons().addAll(genericPersons);
 
-		flowRepository.save(flow);
+//		flowRepository.save(flow);
 
 		Log log = new Log();
 		log.setAction(LogAction.Create);
@@ -118,6 +118,7 @@ public class FlowService {
 						creator.getDepartment().getId());
 				genericPerson.setUser(superior);
 				genericPersons.add(genericPerson);
+				flowRepository.save(flow);
 				genericPersonRepository.save(genericPerson);
 
 			}
