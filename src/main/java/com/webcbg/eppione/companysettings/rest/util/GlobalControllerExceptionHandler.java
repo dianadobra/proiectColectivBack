@@ -1,11 +1,11 @@
 package com.webcbg.eppione.companysettings.rest.util;
 
-import java.util.List;
-import java.util.Locale;
-
-import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
-
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.webcbg.eppione.companysettings.rest.dto.ErrorInfo;
+import com.webcbg.eppione.companysettings.service.errors.InvalidDataException;
+import com.webcbg.eppione.companysettings.service.errors.ResourceAlreadyExistException;
+import com.webcbg.eppione.companysettings.service.errors.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +18,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.webcbg.eppione.companysettings.rest.dto.ErrorInfo;
-import com.webcbg.eppione.companysettings.service.errors.ConstraintViolationException;
-import com.webcbg.eppione.companysettings.service.errors.InvalidDataException;
-import com.webcbg.eppione.companysettings.service.errors.ResourceAlreadyExistException;
-import com.webcbg.eppione.companysettings.service.errors.ResourceNotFoundException;
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Locale;
 
 @ControllerAdvice
 @RestController
@@ -69,26 +66,6 @@ public class GlobalControllerExceptionHandler {
 						e.getMessageArguments(), e.getMessage(), Locale.ENGLISH))
 				.internalCode(40901).developerMessage(e.getMessage()).build();
 	}
-
-	@ExceptionHandler(value = { ConstraintViolationException.class })
-	@ResponseStatus(HttpStatus.CONFLICT)
-	public ErrorInfo handleConstraintViolationException(final HttpServletRequest request,
-			final ConstraintViolationException e) {
-		return ErrorInfo.builder().status(HttpStatus.CONFLICT.value())
-				.messageKey(e.getMessageKey()).message(messageSource.getMessage(e.getMessageKey(),
-						e.getMessageArguments(), e.getMessage(), Locale.ENGLISH))
-				.internalCode(40402).developerMessage(e.getMessage()).build();
-	}
-
-	// @ExceptionHandler(value = { AuthenticationException.class })
-	// @ResponseStatus(HttpStatus.UNAUTHORIZED)
-	// public ErrorInfo handleAuthenticationException(final HttpServletRequest
-	// request, final AuthenticationException e) {
-	// return ErrorInfo.builder().status(HttpStatus.UNAUTHORIZED.value())
-	// .messageKey(e.getMessageKey()).message(messageSource.getMessage(e.getMessageKey(),
-	// e.getMessageArguments(), e.getMessage(), Locale.ENGLISH))
-	// .internalCode(40101).developerMessage(e.getMessage()).build();
-	// }
 
 	@ExceptionHandler(value = { Exception.class })
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
