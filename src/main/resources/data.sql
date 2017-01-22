@@ -24,7 +24,7 @@ INSERT INTO `user`
  `id_superior`,
  `department_id`)
 VALUES
-    (1, 'Diana', 'Dobra', 'dianadobra', 'dianadobra95@yahoo.ro', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 10, 10, 1),
+    (1, 'Diana', 'Dobra', 'dianadobra', 'dianadobra95@yahoo.ro', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 0, 9, 1),
     (2, 'Sandi', 'Petrut', 'sandipetrut', 'sandi@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 10, 10, 1),
     (3, 'Helga', 'Fekete', 'helgafekete', 'helga@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 10, 10, 1),
     (4, 'Mircea', 'Ciuciu', 'mirceaciuciu', 'mircea@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 10, 10, 1),
@@ -32,7 +32,7 @@ VALUES
     (6, 'Vsa', 'Draghita', 'vsadraghita', 'vsa@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 10, 10, 1),
     (7, 'Felix', 'Danut', 'felixdanut', 'felix@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 10, 10, 1),
     (8, 'Daniel', 'Bogdan', 'danielbogdan', 'daniel@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 10, 10, 1),
-    (9, 'John', 'Smith', 'johnsmith', 'johnsmith', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 0, 9, 1),
+    (9, 'John', 'Smith', 'johnsmith', 'johnsmith', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 10, 10, 1),
     (10, 'Jane', 'Smith', 'janesmith', 'janesmith@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 1, 11, 1),
     (11, 'Aria', 'Hastings', 'ariahastings', 'ariahastings@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 7, 11, 2),
     (12, 'Irene', 'Fields', 'irenefields', 'irenefields@mail.com', '$2a$10$Q2AOEO4LHdoX6cbNtQw00ux8pOXeVWuvaJwvyRu/vb55wYnilkj1O', 2, 12, 1),

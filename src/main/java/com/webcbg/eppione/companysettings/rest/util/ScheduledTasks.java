@@ -37,7 +37,7 @@ public class ScheduledTasks {
 			long start = updateDate.getTime();
 			long days = TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
 
-			if (days == 1) {
+			if (days == 30) {
 				// send mail
 
 				doc.setPreparedForDelete(true);
@@ -69,7 +69,7 @@ public class ScheduledTasks {
 			long start = updateDate.getTime();
 			long days = TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
 
-			if (days == 2) {
+			if (days >= 30) {
 				// send mail
 
 				documentRepository.delete(doc);

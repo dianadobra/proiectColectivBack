@@ -49,6 +49,7 @@ public class User {
 	@JoinColumn(name = "department_id")
 	private Department department;
 	
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinTable(name = "user_awaiting_flows", joinColumns = {
 			@JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = {

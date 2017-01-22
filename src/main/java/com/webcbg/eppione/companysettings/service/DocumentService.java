@@ -2,6 +2,7 @@ package com.webcbg.eppione.companysettings.service;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -65,7 +66,7 @@ public class DocumentService {
 
 			doc.setName(document.getOriginalFilename());
 			if (previousDocuments.size() > 0) {
-				doc.setVersion(previousDocuments.get(previousDocuments.size() - 1).getVersion() + 0.1f);
+				doc.setVersion(previousDocuments.get(0).getVersion() + 0.1f);
 				doc.setGuid(previousDocuments.get(0).getGuid());
 			} else {
 				doc.setVersion(0.1f);
@@ -106,7 +107,8 @@ public class DocumentService {
 	}
 
 	public List<DocumentDTO> getAllDocuments(Long userId) {
-		return documentConverter.toDtoList(documentRepository.findAllByAuthorIdOrderByGuidAsc(userId));
+		List<Document> all = documentRepository.findAllByAuthorIdOrderByGuidAsc(userId);
+		return documentConverter.toDtoList(all);
 	}
 
 	public byte[] downloadDocument(final long docId) {
@@ -163,6 +165,9 @@ public class DocumentService {
 			} catch (IOException e) {
 				throw new InvalidDataException("Error uploading file!", "file.upload.fail");
 			}
+		}else{
+			newDoc.setName(doc.getName());
+			newDoc.setDocumentUrl(doc.getDocumentUrl());
 		}
 		doc.setDocumentState(DocumentStatus.Draft);
 		documentRepository.save(doc);
@@ -229,11 +234,12 @@ public class DocumentService {
 		if (doc == null) {
 			throw new ResourceNotFoundException("Document not found!");
 		}
+		List<Document> all = this.documentRepository.findAllByGuidOrderByVersionDesc(doc.getGuid());
 		doc.setDocumentState(DocumentStatus.valueOf(status));
 		if (DocumentStatus.valueOf(status).equals(DocumentStatus.Draft)) {
 			doc.setVersion(doc.getVersion() / 10);
 		} else if (DocumentStatus.valueOf(status).equals(DocumentStatus.Final)) {
-			doc.setVersion(doc.getVersion() * 10);
+			doc.setVersion(1l);
 		}
 
 		// create log for changed status

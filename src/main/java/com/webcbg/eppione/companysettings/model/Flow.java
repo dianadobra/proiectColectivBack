@@ -17,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -38,6 +40,7 @@ public class Flow {
 	@Column(name="comment")
 	private List<String> comments;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "creator_id")
 	private User creator;
@@ -52,6 +55,7 @@ public class Flow {
 					@JoinColumn(name = "document_id", referencedColumnName = "id") })
 	private List<Document> documents;
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "flow", cascade=CascadeType.ALL)
 	private List<GenericPerson> genericPersons;
 	

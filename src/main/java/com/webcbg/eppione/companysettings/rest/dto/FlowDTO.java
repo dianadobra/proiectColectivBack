@@ -22,6 +22,6 @@ public class FlowDTO {
 	private List<Long> documentsIds;
 	private ApprovalStatus status;
 	private List<String> comments;
-	private Date deadline;
+	private String deadline;
 
 }

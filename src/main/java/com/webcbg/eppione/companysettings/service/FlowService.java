@@ -263,15 +263,6 @@ public class FlowService {
 			flow.getComments().add(comment);
 			flow.setGenericPersons(new ArrayList<>());
 
-			GenericPerson genericPerson = new GenericPerson();
-			genericPerson.setFlow(flow);
-			genericPerson.setFunding(flow.getFunding());
-			genericPerson.setHasApproved(false);
-			genericPerson.setUser(creator);
-			genericPersonRepository.save(genericPerson);
-
-			flow.setGenericPersons(this.getGenericPersons(flow, flow.getFunding(), creator));
-
 			flowRepository.save(flow);
 			userRepository.save(user);
 
