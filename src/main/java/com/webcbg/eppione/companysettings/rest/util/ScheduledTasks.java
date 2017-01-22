@@ -37,23 +37,26 @@ public class ScheduledTasks {
 			long start = updateDate.getTime();
 			long days = TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
 
-			if (days == 30) {
+			System.out.println("days " + days);
+			if (days >= 30) {
 				// send mail
+				if (!doc.isPreparedForDelete()){
+					doc.setPreparedForDelete(true);
+					doc.setUpdateDate(new Date());
+					documentRepository.save(doc);
 
-				doc.setPreparedForDelete(true);
-				doc.setUpdateDate(now);
-				documentRepository.save(doc);
+					Log log = new Log();
+					log.setAction(LogAction.PrepoareForDelete);
+					Date dateObj = new Date();
+					log.setDate(dateObj);
+					log.setDescription("Document " + doc.getName() + " prepared for delete. ");
+					log.setEntityId(doc.getId());
+					log.setEntityType(LogEntity.Document);
+					log.setUser(doc.getAuthor());
 
-				Log log = new Log();
-				log.setAction(LogAction.PrepoareForDelete);
-				Date dateObj = new Date();
-				log.setDate(dateObj);
-				log.setDescription("Document " + doc.getName() + " prepared for delete. ");
-				log.setEntityId(doc.getId());
-				log.setEntityType(LogEntity.Document);
-				log.setUser(doc.getAuthor());
-
-				logService.createLog(log);
+					logService.createLog(log);
+				}
+				
 			}
 		}
 	}
@@ -68,7 +71,7 @@ public class ScheduledTasks {
 			long end = now.getTime();
 			long start = updateDate.getTime();
 			long days = TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
-
+			System.out.println("days " + days);
 			if (days >= 30) {
 				// send mail
 
