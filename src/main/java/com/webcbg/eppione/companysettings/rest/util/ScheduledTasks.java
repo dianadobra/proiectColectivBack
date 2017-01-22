@@ -1,9 +1,10 @@
 package com.webcbg.eppione.companysettings.rest.util;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,17 +16,21 @@ import com.webcbg.eppione.companysettings.model.Log;
 import com.webcbg.eppione.companysettings.model.Log.LogAction;
 import com.webcbg.eppione.companysettings.model.Log.LogEntity;
 import com.webcbg.eppione.companysettings.repository.DocumentRepository;
+import com.webcbg.eppione.companysettings.service.GoogleMail;
 import com.webcbg.eppione.companysettings.service.LogService;
+import com.webcbg.eppione.companysettings.service.MailService;
 
 @Component
 public class ScheduledTasks {
 
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 	@Autowired
 	private DocumentRepository documentRepository;
 
 	@Autowired
 	private LogService logService;
+	
+	@Autowired
+	private MailService mailService;
 
 	@Scheduled(fixedRate = 5000)
 	public void prepareDocumentsForDelete() {
@@ -40,6 +45,12 @@ public class ScheduledTasks {
 			System.out.println("days " + days);
 			if (days >= 30) {
 				// send mail
+				try {
+					GoogleMail.Send("", "", "dianadobra95@yahoo.ro", "Document not used", "The document " + doc.getName() + " will be deleted in 30 days, if it will not be updated!");
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (!doc.isPreparedForDelete()){
 					doc.setPreparedForDelete(true);
 					doc.setUpdateDate(new Date());

@@ -38,6 +38,7 @@ public class UserConverter {
 
 	public UserDTO toDTO(final User user) {
 		final UserDTO userDTO = new UserDTO();
+		userDTO.setId(user.getId());
 		Set<Role> roles = user.getRoles();
 		Iterator<Role> it = roles.iterator();
 		userDTO.setRole(it.next());
